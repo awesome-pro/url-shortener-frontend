@@ -97,7 +97,7 @@ export function PricingSection() {
             </span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Choose the plan that's right for you. Upgrade or downgrade at any time.
+            Choose the plan that&apos;s right for you. Upgrade or downgrade at any time.
           </p>
         </div>
 
@@ -192,7 +192,7 @@ export function PricingSection() {
         {/* FAQ */}
         <div className="mt-16 text-center">
           <p className="text-muted-foreground mb-4">
-            Have questions? We're here to help.
+            Have questions? We&apos;re here to help.
           </p>
           <Button variant="outline" size="lg">
             View FAQ

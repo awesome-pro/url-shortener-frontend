@@ -2,8 +2,6 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { AuthGuard } from '@/components/auth/auth-guard'
-import { MainLayout } from '@/components/layout/main-layout'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -184,133 +182,129 @@ export default function URLsPage() {
   )
 
   return (
-    <AuthGuard>
-      <MainLayout>
-        <div className="container mx-auto px-4 py-8">
-          <div className="flex items-center justify-between mb-8">
-            <div>
-              <h1 className="text-3xl font-bold">Your URLs</h1>
-              <p className="text-muted-foreground">
-                Manage and track all your shortened links
-              </p>
-            </div>
-            <Button asChild>
-              <Link href="/urls/create">
-                <Plus className="mr-2 h-4 w-4" />
-                Create URL
-              </Link>
-            </Button>
+    <div className="container mx-auto px-4 py-8">
+      <div className="flex items-center justify-between mb-8">
+        <div>
+          <h1 className="text-3xl font-bold">Your URLs</h1>
+          <p className="text-muted-foreground">
+            Manage and track all your shortened links
+          </p>
+        </div>
+        <Button asChild>
+          <Link href="/urls/create">
+            <Plus className="mr-2 h-4 w-4" />
+            Create URL
+          </Link>
+        </Button>
+      </div>
+
+      {/* Search */}
+      <Card className="mb-6">
+        <CardContent className="p-4">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+            <Input
+              placeholder="Search URLs by title, code, or original URL..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10"
+            />
           </div>
+        </CardContent>
+      </Card>
 
-          {/* Search */}
-          <Card className="mb-6">
-            <CardContent className="p-4">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-                <Input
-                  placeholder="Search URLs by title, code, or original URL..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
-                />
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* URLs List */}
-          {loading ? (
-            <div className="space-y-4">
-              {[...Array(5)].map((_, i) => (
-                <Card key={i}>
-                  <CardContent className="p-6">
-                    <div className="space-y-3">
-                      <Skeleton className="h-4 w-full max-w-md" />
-                      <Skeleton className="h-4 w-full" />
-                      <Skeleton className="h-4 w-full max-w-lg" />
-                      <div className="flex justify-between">
-                        <Skeleton className="h-4 w-20" />
-                        <Skeleton className="h-4 w-32" />
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          ) : filteredUrls.length > 0 ? (
-            <>
-              <div className="space-y-4 mb-8">
-                {filteredUrls.map((url) => (
-                  <URLCard key={url.id} url={url} />
-                ))}
-              </div>
-
-              {/* Pagination */}
-              {urls && urls.pages > 1 && (
-                <div className="flex justify-center">
-                  <Pagination>
-                    <PaginationContent>
-                      <PaginationItem>
-                        <PaginationPrevious
-                          onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
-                          className={currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
-                        />
-                      </PaginationItem>
-                      
-                      {[...Array(Math.min(5, urls.pages))].map((_, i) => {
-                        const page = i + 1
-                        return (
-                          <PaginationItem key={page}>
-                            <PaginationLink
-                              onClick={() => setCurrentPage(page)}
-                              isActive={currentPage === page}
-                              className="cursor-pointer"
-                            >
-                              {page}
-                            </PaginationLink>
-                          </PaginationItem>
-                        )
-                      })}
-                      
-                      {urls.pages > 5 && (
-                        <PaginationItem>
-                          <PaginationEllipsis />
-                        </PaginationItem>
-                      )}
-                      
-                      <PaginationItem>
-                        <PaginationNext
-                          onClick={() => setCurrentPage(Math.min(urls.pages, currentPage + 1))}
-                          className={currentPage === urls.pages ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
-                        />
-                      </PaginationItem>
-                    </PaginationContent>
-                  </Pagination>
+      {/* URLs List */}
+      {loading ? (
+        <div className="space-y-4">
+          {[...Array(5)].map((_, i) => (
+            <Card key={i}>
+              <CardContent className="p-6">
+                <div className="space-y-3">
+                  <Skeleton className="h-4 w-full max-w-md" />
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-full max-w-lg" />
+                  <div className="flex justify-between">
+                    <Skeleton className="h-4 w-20" />
+                    <Skeleton className="h-4 w-32" />
+                  </div>
                 </div>
-              )}
-            </>
-          ) : (
-            <Card>
-              <CardContent className="text-center py-12">
-                <Link2 className="mx-auto h-12 w-12 text-muted-foreground/50" />
-                <h3 className="mt-4 text-lg font-semibold">
-                  {searchTerm ? 'No URLs found' : 'No URLs yet'}
-                </h3>
-                <p className="text-muted-foreground mt-2">
-                  {searchTerm
-                    ? 'Try adjusting your search terms'
-                    : 'Create your first short URL to get started'
-                  }
-                </p>
-                {!searchTerm && (
-                  <Button className="mt-4" asChild>
-                    <Link href="/urls/create">Create Short URL</Link>
-                  </Button>
-                )}
               </CardContent>
             </Card>
-          )}
+          ))}
         </div>
-      </MainLayout>
-    </AuthGuard>
+      ) : filteredUrls.length > 0 ? (
+        <>
+          <div className="space-y-4 mb-8">
+            {filteredUrls.map((url) => (
+              <URLCard key={url.id} url={url} />
+            ))}
+          </div>
+
+          {/* Pagination */}
+          {urls && urls.pages > 1 && (
+            <div className="flex justify-center">
+              <Pagination>
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious
+                      onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                      className={currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
+                    />
+                  </PaginationItem>
+                  
+                  {[...Array(Math.min(5, urls.pages))].map((_, i) => {
+                    const page = i + 1
+                    return (
+                      <PaginationItem key={page}>
+                        <PaginationLink
+                          onClick={() => setCurrentPage(page)}
+                          isActive={currentPage === page}
+                          className="cursor-pointer"
+                        >
+                          {page}
+                        </PaginationLink>
+                      </PaginationItem>
+                    )
+                  })}
+                  
+                  {urls.pages > 5 && (
+                    <PaginationItem>
+                      <PaginationEllipsis />
+                    </PaginationItem>
+                  )}
+                  
+                  <PaginationItem>
+                    <PaginationNext
+                      onClick={() => setCurrentPage(Math.min(urls.pages, currentPage + 1))}
+                      className={currentPage === urls.pages ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            </div>
+          )}
+        </>
+      ) : (
+        <Card>
+          <CardContent className="text-center py-12">
+            <Link2 className="mx-auto h-12 w-12 text-muted-foreground/50" />
+            <h3 className="mt-4 text-lg font-semibold">
+              {searchTerm ? 'No URLs found' : 'No URLs yet'}
+            </h3>
+            <p className="text-muted-foreground mt-2">
+              {searchTerm
+                ? 'Try adjusting your search terms'
+                : 'Create your first short URL to get started'
+              }
+            </p>
+            {!searchTerm && (
+              <Button className="mt-4" asChild>
+                <Link href="/urls/create">Create Short URL</Link>
+              </Button>
+            )}
+          </CardContent>
+        </Card>
+      )}
+    </div>
   )
 }

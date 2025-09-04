@@ -31,7 +31,7 @@ import {
 import { urlApi } from '@/lib/url-api'
 import { URL, URLAnalytics, ClickAnalytics } from '@/types'
 import { formatNumber, formatDateTime, copyToClipboard, shortenUrl } from '@/lib/utils'
-import { toast } from 'sonner'
+import {toast }from 'sonner'
 
 export default function URLAnalyticsPage() {
   const params = useParams()
@@ -55,9 +55,9 @@ export default function URLAnalyticsPage() {
         ])
         
         setUrl(urlData)
-        setAnalytics(analyticsData)
-        setDailyClicks(dailyData.daily_clicks || [])
-        setReferrers(referrerData.referrers || [])
+        setAnalytics(analyticsData as URLAnalytics)
+        setDailyClicks(dailyData as ClickAnalytics[] || [])
+        setReferrers((referrerData as any).referrers || [])
       } catch (error) {
         console.error('Failed to fetch analytics:', error)
         toast.error('Failed to load analytics data')
@@ -136,7 +136,7 @@ export default function URLAnalyticsPage() {
               <CardContent className="text-center py-12">
                 <h3 className="text-lg font-semibold">URL not found</h3>
                 <p className="text-muted-foreground mt-2">
-                  The URL you're looking for doesn't exist or you don't have access to it.
+                  The URL you&apos;re looking for doesn&apos;t exist or you don&apos;t have access to it.
                 </p>
                 <Button asChild className="mt-4">
                   <Link href="/urls">Back to URLs</Link>
