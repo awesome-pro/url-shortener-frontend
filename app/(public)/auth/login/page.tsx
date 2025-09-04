@@ -8,11 +8,12 @@ import { useAuth } from '@/hooks/use-auth'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Loader2, Link2 } from 'lucide-react'
+import { Loader2, Link2, ArrowLeft } from 'lucide-react'
 import { LoginFormData } from '@/types'
-import { toast } from 'sonner'
+import {toast }from 'sonner'
+import Image from 'next/image'
 
 export default function LoginPage() {
   const [error, setError] = useState('')
@@ -38,21 +39,17 @@ export default function LoginPage() {
   }
 
   return (
-      <div className="flex items-center justify-center min-h-[calc(100vh-3.5rem)] px-4 py-12">
-        <Card className="w-full max-w-md">
-          <CardHeader className="text-center">
-            <div className="flex justify-center mb-4">
-              <div className="flex items-center justify-center w-12 h-12 rounded-full bg-primary/10">
-                <Link2 className="w-6 h-6 text-primary" />
-              </div>
-            </div>
-            <CardTitle className="text-2xl">Welcome back</CardTitle>
-            <CardDescription>
-              Sign in to your account to continue
-            </CardDescription>
+    <div className="min-h-screen bg-gradient-to-br from-slate-100 via-slate-200 to-slate-300 flex items-center justify-center p-4">
+      {/* Background Elements */}
+
+        <Card className="shadow-xl border-2 min-w-md">
+          <CardHeader className='flex justify-center'>
+            <Link href="/">
+              <Image src="/logo.png" alt="LinkShort" width={132} height={32} />
+            </Link>
           </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <CardContent className="pt-0">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
               {error && (
                 <Alert variant="destructive">
                   <AlertDescription>{error}</AlertDescription>
@@ -60,7 +57,7 @@ export default function LoginPage() {
               )}
 
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email" className="text-sm font-medium">Email</Label>
                 <Input
                   id="email"
                   type="email"
@@ -79,7 +76,7 @@ export default function LoginPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password" className="text-sm font-medium">Password</Label>
                 <Input
                   id="password"
                   type="password"
@@ -99,12 +96,12 @@ export default function LoginPage() {
 
               <Button
                 type="submit"
-                className="w-full"
+                className="w-full text-base font-semibold"
                 disabled={isSubmitting || isLoading}
               >
                 {isSubmitting || isLoading ? (
                   <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                     Signing in...
                   </>
                 ) : (
@@ -113,17 +110,20 @@ export default function LoginPage() {
               </Button>
             </form>
 
-            <div className="mt-6 text-center text-sm">
-              <span className="text-muted-foreground">Don't have an account? </span>
-              <Link
-                href="/auth/register"
-                className="font-medium text-primary hover:underline"
-              >
-                Sign up
-              </Link>
-            </div>
+            
           </CardContent>
+          <CardFooter className='flex justify-center'>
+            <span className="bg-background px-4 text-muted-foreground text-sm">Don't have an account? <Link href="/auth/register" className='text-primary hover:underline'>Create Account</Link></span>
+          </CardFooter>
         </Card>
-      </div>
+  
+        <Button variant="ghost" size="sm" asChild className='absolute top-4 left-4'>
+          <Link href="/">
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back to Home
+          </Link>
+        </Button>
+    
+    </div>
   )
 }

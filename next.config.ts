@@ -6,7 +6,14 @@ const nextConfig: NextConfig = {
     optimizePackageImports: ['lucide-react', 'recharts'],
   },
   images: {
-    domains: [],
+    domains: [
+      'images.unsplash.com',
+      'avatars.githubusercontent.com',
+      'media.istockphoto.com',
+      'img.freepik.com',
+      'images.pexels.com',
+      'harleytherapy.co.uk',
+    ],
   },
   // async redirects() {
   //   return [

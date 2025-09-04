@@ -1,21 +1,24 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { useAuth } from '@/hooks/use-auth'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Loader2, Link2 } from 'lucide-react'
+import { Loader2, Link2, ArrowLeft, Check } from 'lucide-react'
 import { RegisterFormData } from '@/types'
 import { toast } from 'sonner'
+import Image from 'next/image'
 
 export default function RegisterPage() {
   const [error, setError] = useState('')
   const { register: registerUser, isLoading } = useAuth()
+  const router = useRouter()
 
   const {
     register,
@@ -34,9 +37,9 @@ export default function RegisterPage() {
         username: data.username,
         password: data.password,
       })
-      toast.loading('Registration successful!, Redirecting to dashboard...')
+      toast.success('Registration successful. Please check your email for verification.')
       setTimeout(() => {
-        window.location.href = '/dashboard'
+        router.push('/dashboard')
       }, 2000)
     } catch (err: any) {
       const errorMessage = err.response?.data?.detail || 'Registration failed. Please try again.'
@@ -45,22 +48,19 @@ export default function RegisterPage() {
     }
   }
 
-  return (  
-      <div className="flex items-center justify-center min-h-[calc(100vh-3.5rem)] px-4 py-12">
-        <Card className="w-full max-w-md">
-          <CardHeader className="text-center">
-            <div className="flex justify-center mb-4">
-              <div className="flex items-center justify-center w-12 h-12 rounded-full bg-primary/10">
-                <Link2 className="w-6 h-6 text-primary" />
-              </div>
-            </div>
-            <CardTitle className="text-2xl">Create account</CardTitle>
-            <CardDescription>
-              Sign up to start shortening your URLs
-            </CardDescription>
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-100 via-slate-200 to-slate-300 flex items-center justify-center p-4">
+      {/* Background Elements */}
+    
+        <Card className="shadow-xl border-2 min-w-md">
+          <CardHeader className='flex justify-center'>
+            <Link href="/">
+              <Image src="/logo.png" alt="LinkShort" width={132} height={32} />
+            </Link>
           </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          
+          <CardContent className="pt-0">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
               {error && (
                 <Alert variant="destructive">
                   <AlertDescription>{error}</AlertDescription>
@@ -68,7 +68,7 @@ export default function RegisterPage() {
               )}
 
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email" className="text-sm font-medium">Email</Label>
                 <Input
                   id="email"
                   type="email"
@@ -87,11 +87,11 @@ export default function RegisterPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="username">Username</Label>
+                <Label htmlFor="username" className="text-sm font-medium">Username</Label>
                 <Input
                   id="username"
                   type="text"
-                  placeholder="Enter your username"
+                  placeholder="Choose a username"
                   {...register('username', {
                     required: 'Username is required',
                     minLength: {
@@ -110,11 +110,11 @@ export default function RegisterPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password" className="text-sm font-medium">Password</Label>
                 <Input
                   id="password"
                   type="password"
-                  placeholder="Enter your password"
+                  placeholder="Create a password"
                   {...register('password', {
                     required: 'Password is required',
                     minLength: {
@@ -129,7 +129,7 @@ export default function RegisterPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="confirmPassword">Confirm Password</Label>
+                <Label htmlFor="confirmPassword" className="text-sm font-medium">Confirm Password</Label>
                 <Input
                   id="confirmPassword"
                   type="password"
@@ -145,33 +145,33 @@ export default function RegisterPage() {
                 )}
               </div>
 
+
               <Button
                 type="submit"
-                className="w-full"
+                className="w-full text-base font-semibold"
                 disabled={isSubmitting || isLoading}
               >
                 {isSubmitting || isLoading ? (
                   <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                     Creating account...
                   </>
                 ) : (
                   'Create Account'
                 )}
               </Button>
-            </form>
-
-            <div className="mt-6 text-center text-sm">
-              <span className="text-muted-foreground">Already have an account? </span>
-              <Link
-                href="/auth/login"
-                className="font-medium text-primary hover:underline"
-              >
-                Sign in
-              </Link>
-            </div>
+            </form>         
           </CardContent>
+          <CardFooter className='flex justify-center'>
+            <span className="bg-background px-4 text-muted-foreground text-sm">Already have an account? <Link href="/auth/login" className="text-primary hover:underline">Sign In</Link></span>
+          </CardFooter>
         </Card>
-      </div>
+        <Button variant="ghost" size="sm" asChild className='absolute top-4 left-4'>
+            <Link href="/">
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back to Home
+            </Link>
+        </Button>
+    </div>
   )
 }
