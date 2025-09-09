@@ -17,7 +17,7 @@ export function URLsHeader({ totalUrls, activeUrls, totalClicks }: URLsHeaderPro
       {/* Main Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Your URLs</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Your <span className='text-primary'>Power Links</span></h1>
           <p className="text-muted-foreground mt-1">
             Manage and track all your shortened links
           </p>

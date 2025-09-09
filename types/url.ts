@@ -39,7 +39,11 @@ export interface URLListResponse extends PaginateResponse<URL> {
 }
 
 export interface URLAnalytics {
+    url_id: string
     total_clicks: number
+    clicks_today: number
+    clicks_this_week: number
+    clicks_this_month: number
     daily_clicks: {
         date: Date
         clicks: number
@@ -48,6 +52,8 @@ export interface URLAnalytics {
         referrer: string
         clicks: number
     }[]
+    last_clicked: Date
+    created_at: Date
 }
 
 export interface ClickAnalytics {

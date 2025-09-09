@@ -14,7 +14,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import {
-  Link2,
   MoreHorizontal,
   Copy,
   BarChart3,
@@ -26,8 +25,7 @@ import {
   Clock,
 } from 'lucide-react'
 import { URL, URLStatus } from '@/types'
-import { formatDateTime, formatNumber, copyToClipboard, shortenUrl } from '@/lib/utils'
-import { toast } from 'sonner'
+import { formatDateTime, formatNumber, shortenUrl } from '@/lib/utils'
 
 interface URLCardProps {
   url: URL
@@ -70,11 +68,7 @@ export function URLCard({ url, onDelete, onCopy }: URLCardProps) {
         {/* Header */}
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center space-x-3 min-w-0 flex-1">
-            <div className="p-2 bg-primary/10 rounded-lg">
-              <Link2 className="h-4 w-4 text-primary" />
-            </div>
-            <div className="min-w-0 flex-1">
-              <h3 className="font-semibold text-lg truncate">
+          <h3 className="font-semibold text-lg truncate">
                 {url.title || url.short_code}
               </h3>
               <div className="flex items-center space-x-2 mt-1">
@@ -90,55 +84,29 @@ export function URLCard({ url, onDelete, onCopy }: URLCardProps) {
                   </Badge>
                 )}
               </div>
-            </div>
+           
           </div>
 
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                className="opacity-0 group-hover:opacity-100 transition-opacity"
-              >
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48">
-              <DropdownMenuLabel>Quick Actions</DropdownMenuLabel>
-              <DropdownMenuItem onClick={() => onCopy(url.short_url)}>
-                <Copy className="mr-2 h-4 w-4" />
-                Copy Link
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href={url.short_url} target="_blank">
-                  <ExternalLink className="mr-2 h-4 w-4" />
-                  Visit Link
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem asChild>
-                <Link href={`/urls/${url.id}/analytics`}>
-                  <BarChart3 className="mr-2 h-4 w-4" />
-                  Analytics
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href={`/urls/${url.id}/edit`}>
-                  <Edit className="mr-2 h-4 w-4" />
-                  Edit
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={handleDelete}
-                disabled={isDeleting}
-                className="text-destructive focus:text-destructive"
-              >
-                <Trash2 className="mr-2 h-4 w-4" />
-                {isDeleting ? 'Deleting...' : 'Delete'}
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+         <div className="hidden lg:flex items-center gap-2">
+            <Button variant="outline" size="sm" asChild>
+              <Link href={`/dashboard/urls/${url.id}/edit`}>
+                <Edit className="mr-1 h-3 w-3" />
+                Edit
+              </Link>
+            </Button>
+            <Button size="sm" asChild>
+              <Link href={`/dashboard/urls/${url.id}/analytics`}>
+                <BarChart3 className="mr-1 h-3 w-3" />
+                Analytics
+              </Link>
+            </Button>
+            <Button variant="destructive" size="sm" asChild>
+              <Link href={`/dashboard/urls/${url.id}/analytics`} onClick={handleDelete}>
+                <Trash2 className="mr-1 h-3 w-3" />
+                Delete
+              </Link>
+            </Button>
+         </div>
         </div>
 
         {/* Description */}
@@ -149,14 +117,12 @@ export function URLCard({ url, onDelete, onCopy }: URLCardProps) {
         )}
 
         {/* URLs */}
-        <div className="space-y-3 mb-4">
+        <div className="flex flex-col lg:flex-row gap-2">
           {/* Short URL */}
-          <div className="space-y-2">
-            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-              Short URL
-            </span>
+        
+            
             <div className="flex items-center space-x-2 p-2 bg-muted/50 rounded-lg">
-              <code className="text-sm font-mono text-primary flex-1 truncate">
+              <code className="text-base font-mono text-primary flex-1 truncate font-bold">
                 {url.short_url}
               </code>
               <Button
@@ -167,16 +133,13 @@ export function URLCard({ url, onDelete, onCopy }: URLCardProps) {
               >
                 <Copy className="h-3 w-3" />
               </Button>
-            </div>
+            
           </div>
 
           {/* Original URL */}
-          <div className="space-y-2">
-            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-              Original URL
-            </span>
+          
             <div className="flex items-center space-x-2 p-2 bg-muted/30 rounded-lg">
-              <a
+              <Link
                 href={url.original_url}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -184,45 +147,27 @@ export function URLCard({ url, onDelete, onCopy }: URLCardProps) {
                 title={url.original_url}
               >
                 {shortenUrl(url.original_url, 50)}
-              </a>
+              </Link>
               <ExternalLink className="h-3 w-3 text-muted-foreground flex-shrink-0" />
-            </div>
           </div>
         </div>
 
         {/* Stats & Info */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4 border-t">
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center gap-1 text-xs">
             <Eye className="h-4 w-4 text-muted-foreground" />
-            <div>
-              <div className="font-semibold text-sm">
-                {formatNumber(url.click_count)}
-              </div>
-              <div className="text-xs text-muted-foreground">Clicks</div>
-            </div>
+            {formatNumber(url.click_count)}
           </div>
           
-          <div className="flex items-center space-x-2">
-            <Calendar className="h-4 w-4 text-muted-foreground" />
-            <div>
-              <div className="font-semibold text-sm">
-                {formatDateTime(url.created_at)}
-              </div>
-              <div className="text-xs text-muted-foreground">Created</div>
-            </div>
+          <div className="flex items-center text-blue-600 gap-1 text-xs">
+            <Calendar className="h-4 w-4 text-blue-600" />
+            {formatDateTime(url.created_at)}
           </div>
 
           {url.expires_at && (
-            <div className="flex items-center space-x-2 col-span-2 sm:col-span-2">
-              <Clock className="h-4 w-4 text-muted-foreground" />
-              <div>
-                <div className={`font-semibold text-sm ${isExpired ? 'text-destructive' : ''}`}>
-                  {formatDateTime(url.expires_at)}
-                </div>
-                <div className="text-xs text-muted-foreground">
-                  {isExpired ? 'Expired' : 'Expires'}
-                </div>
-              </div>
+            <div className="flex items-center gap-1 text-red-500 text-xs">
+                <Clock className="h-4 w-4 text-red-500" />
+                {formatDateTime(url.expires_at)}
             </div>
           )}
         </div>
@@ -239,13 +184,13 @@ export function URLCard({ url, onDelete, onCopy }: URLCardProps) {
             Copy
           </Button>
           <Button variant="outline" size="sm" asChild>
-            <Link href={`/urls/${url.id}/analytics`}>
+            <Link href={`/dashboard/urls/${url.id}/analytics`}>
               <BarChart3 className="mr-1 h-3 w-3" />
               Analytics
             </Link>
           </Button>
           <Button variant="outline" size="sm" asChild>
-            <Link href={`/urls/${url.id}/edit`}>
+            <Link href={`/dashboard/urls/${url.id}/edit`}>
               <Edit className="mr-1 h-3 w-3" />
               Edit
             </Link>

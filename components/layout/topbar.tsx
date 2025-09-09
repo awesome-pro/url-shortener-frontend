@@ -148,7 +148,6 @@ export function TopBar() {
                 >
                   <User className="mr-2 h-4 w-4" />
                   <span>Profile </span>
-                  <Badge variant="default">{user?.role}</Badge>
                 </DropdownMenuItem>
                 <DropdownMenuItem 
                   onSelect={() => router.push('/dashboard/settings')}

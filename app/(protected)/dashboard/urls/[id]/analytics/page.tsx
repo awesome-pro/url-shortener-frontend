@@ -1,10 +1,8 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useParams } from 'next/navigation'
-import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Badge } from '@/components/ui/badge'
 import {
@@ -14,22 +12,29 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer,
-  BarChart,
-  Bar,
-} from 'recharts'
+  ResponsiveContainer} from 'recharts'
 import {
-  ArrowLeft,
   MousePointerClick,
   Calendar,
   TrendingUp,
   ExternalLink,
   Copy,
+  ArrowLeft,
+  Eye,
+  Globe,
+  Clock,
+  Users,
+  Activity,
+  Share2
 } from 'lucide-react'
+import { copyToClipboard, formatDate, formatDateTime, formatNumber, shortenUrl } from '@/lib/utils'
+import MetricCard from './metric-card'
+import { ClickAnalytics, URLAnalytics, URL } from '@/types'
+import { useParams } from 'next/navigation'
 import { urlApi } from '@/lib/url-api'
-import { URL, URLAnalytics, ClickAnalytics } from '@/types'
-import { formatNumber, formatDateTime, copyToClipboard, shortenUrl } from '@/lib/utils'
-import {toast }from 'sonner'
+import { toast } from 'sonner'
+import Link from 'next/link'
+
 
 export default function URLAnalyticsPage() {
   const params = useParams()
@@ -40,6 +45,7 @@ export default function URLAnalyticsPage() {
   const [dailyClicks, setDailyClicks] = useState<ClickAnalytics[]>([])
   const [referrers, setReferrers] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
+  const [copied, setCopied] = useState(false)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -72,273 +78,287 @@ export default function URLAnalyticsPage() {
   const handleCopy = async (shortUrl: string) => {
     try {
       await copyToClipboard(shortUrl)
-      toast.success('Copied to clipboard!')
+      setCopied(true)
+      toast.success('Copied to clipboard')
+      setTimeout(() => setCopied(false), 2000)
     } catch (err) {
-      toast.error('Failed to copy to clipboard')
+      toast.error('Failed to copy')
+      console.error('Failed to copy')
     }
   }
 
-  const StatCard = ({ title, value, description, icon: Icon, loading }: {
-    title: string
-    value: number | string
-    description: string
-    icon: any
-    loading: boolean
-  }) => (
-    <Card>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium">{title}</CardTitle>
-        <Icon className="h-4 w-4 text-muted-foreground" />
-      </CardHeader>
-      <CardContent>
-        <div className="text-2xl font-bold">
-          {loading ? <Skeleton className="h-8 w-16" /> : value}
+  if (loading || !url || !analytics) {
+    return (
+      <div className="min-h-screen bg-gray-50/30 p-4">
+        <div className="max-w-7xl mx-auto space-y-6">
+          <div className="space-y-4">
+            <Skeleton className="h-8 w-64" />
+            <Skeleton className="h-4 w-96" />
+          </div>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            {[...Array(4)].map((_, i) => (
+              <Card key={i} className="p-6">
+                <Skeleton className="h-6 w-6 mb-4" />
+                <Skeleton className="h-8 w-16 mb-2" />
+                <Skeleton className="h-4 w-20" />
+              </Card>
+            ))}
+          </div>
         </div>
-        <p className="text-xs text-muted-foreground">{description}</p>
-      </CardContent>
-    </Card>
-  )
-
-  if (loading) {
-    return (
-
-          <div className="container mx-auto px-4 py-8">
-            <div className="mb-8">
-              <Skeleton className="h-8 w-64 mb-2" />
-              <Skeleton className="h-4 w-96" />
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-              {[...Array(4)].map((_, i) => (
-                <Card key={i}>
-                  <CardContent className="p-6">
-                    <Skeleton className="h-4 w-20 mb-2" />
-                    <Skeleton className="h-8 w-16 mb-2" />
-                    <Skeleton className="h-3 w-24" />
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-
-    )
-  }
-
-  if (!url || !analytics) {
-    return (
-     
-          <div className="container mx-auto px-4 py-8">
-            <Card>
-              <CardContent className="text-center py-12">
-                <h3 className="text-lg font-semibold">URL not found</h3>
-                <p className="text-muted-foreground mt-2">
-                  The URL you&apos;re looking for doesn&apos;t exist or you don&apos;t have access to it.
-                </p>
-                <Button asChild className="mt-4">
-                  <Link href="/urls">Back to URLs</Link>
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-       
+      </div>
     )
   }
 
   return (
-
-        <div className="container mx-auto px-4 py-8">
-          {/* Header */}
-          <div className="mb-8">
-            <div className="flex items-center space-x-4 mb-4">
-              <Button variant="ghost" size="sm" asChild>
-                <Link href="/urls">
-                  <ArrowLeft className="h-4 w-4 mr-2" />
-                  Back to URLs
-                </Link>
-              </Button>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
+      {/* Mobile-first header */}
+      <div className="z-10 bg-white/80 backdrop-blur-sm border-b border-gray-200/60">
+        <div className="max-w-7xl mx-auto px-4 py-4">
+          <div className="flex-1 min-w-0">
+            <h1 className="text-xl font-bold text-gray-900 truncate">
+              {url.title || url.short_code}
+            </h1>
+            <div className="flex items-center gap-2 mt-1">
+              <Badge variant={url.status === 'active' ? 'success' : 'secondary'} className="text-xs">
+                {url.status}
+              </Badge>
+              <span className="text-xs text-gray-500">
+                Created {formatDate(url.created_at)}
+              </span>
             </div>
-            
-            <div className="flex items-start justify-between">
-              <div className="flex-1 min-w-0">
-                <h1 className="text-3xl font-bold mb-2">
-                  {url.title || `/${url.short_code}`}
-                </h1>
-                
+        </div>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto p-4 space-y-6">
+        {/* URL Info Card - Mobile Optimized */}
+        <Card className="border-0 shadow-sm bg-white">
+          <CardContent className="p-4 sm:p-6">
+            <div className="space-y-4">
+              {/* Short URL */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700">Short URL</label>
+                <div className="flex items-center gap-2 p-3 bg-blue-50 rounded-xl border border-blue-100">
+                  <code className="flex-1 text-sm font-mono text-blue-700 truncate">
+                    {url.short_url}
+                  </code>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => handleCopy(url.short_url)}
+                    className="shrink-0 h-8 w-8 p-0 hover:bg-blue-100"
+                  >
+                    {copied ? (
+                      <span className="text-xs text-green-600 font-medium">✓</span>
+                    ) : (
+                      <Copy className="h-4 w-4 text-blue-600" />
+                    )}
+                  </Button>
+                </div>
+              </div>
+
+              {/* Original URL */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700">Original URL</label>
+                <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-xl border border-gray-100">
+                  <span className="flex-1 text-sm text-gray-600 truncate">
+                    {shortenUrl(url.original_url, 60)}
+                  </span>
+                  <ExternalLink className="h-4 w-4 text-gray-400 shrink-0" />
+                </div>
+              </div>
+
+              {/* Description */}
+              {url.description && (
                 <div className="space-y-2">
-                  <div className="flex items-center space-x-2">
-                    <span className="text-sm text-muted-foreground">Short URL:</span>
-                    <code className="text-sm bg-muted px-2 py-1 rounded font-mono">
-                      {url.short_url}
-                    </code>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleCopy(url.short_url)}
-                    >
-                      <Copy className="h-3 w-3" />
-                    </Button>
-                  </div>
-                  
-                  <div className="flex items-center space-x-2">
-                    <span className="text-sm text-muted-foreground">Original URL:</span>
-                    <a
-                      href={url.original_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-sm text-primary hover:underline"
-                    >
-                      {shortenUrl(url.original_url, 80)}
-                    </a>
-                    <ExternalLink className="h-3 w-3 text-muted-foreground" />
+                  <label className="text-sm font-medium text-gray-700">Description</label>
+                  <p className="text-sm text-gray-600 leading-relaxed">{url.description}</p>
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Key Metrics - Mobile Grid */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+          <MetricCard
+            title="Total Clicks"
+            value={analytics.total_clicks}
+            subtitle="All time"
+            icon={<MousePointerClick className="h-5 w-5" />}
+            trend={0}
+            color="blue"
+          />
+          <MetricCard
+            title="Today"
+            value={analytics.clicks_today}
+            subtitle="Last 24h"
+            icon={<Calendar className="h-5 w-5" />}
+            trend={0}
+            color="green"
+          />
+          <MetricCard
+            title="This Week"
+            value={analytics.clicks_this_week}
+            subtitle="Last 7 days"
+            icon={<TrendingUp className="h-5 w-5" />}
+            trend={0}
+            color="purple"
+          />
+          <MetricCard
+            title="This Month"
+            value={analytics.clicks_this_month}
+            subtitle="Last 30 days"
+            icon={<Activity className="h-5 w-5" />}
+            trend={0}
+            color="orange"
+          />
+        </div>
+
+        {/* Charts Section */}
+        <div className="space-y-6">
+          {/* Daily Clicks Chart */}
+          <Card className="border-0 shadow-sm">
+            <CardHeader className="pb-3">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                <div>
+                  <CardTitle className="text-lg font-semibold">Click Activity</CardTitle>
+                  <p className="text-sm text-gray-500 mt-1">Daily clicks over time</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1">
+                    <div className="w-3 h-3 rounded-full bg-blue-500"></div>
+                    <span className="text-xs text-gray-600">Clicks</span>
                   </div>
                 </div>
               </div>
-              
-              <Badge variant={url.status === 'active' ? 'default' : 'secondary'}>
-                {url.status}
-              </Badge>
-            </div>
-          </div>
-
-          {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-            <StatCard
-              title="Total Clicks"
-              value={formatNumber(analytics.total_clicks)}
-              description="All-time clicks"
-              icon={MousePointerClick}
-              loading={false}
-            />
-            <StatCard
-              title="Today"
-              value={formatNumber(analytics.clicks_today)}
-              description="Clicks today"
-              icon={Calendar}
-              loading={false}
-            />
-            <StatCard
-              title="This Week"
-              value={formatNumber(analytics.clicks_this_week)}
-              description="Clicks this week"
-              icon={TrendingUp}
-              loading={false}
-            />
-            <StatCard
-              title="This Month"
-              value={formatNumber(analytics.clicks_this_month)}
-              description="Clicks this month"
-              icon={TrendingUp}
-              loading={false}
-            />
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Daily Clicks Chart */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Daily Clicks (Last 30 Days)</CardTitle>
-                <CardDescription>
-                  Click activity over the past month
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                {dailyClicks.length > 0 ? (
-                  <ResponsiveContainer width="100%" height={300}>
-                    <LineChart data={dailyClicks}>
-                      <CartesianGrid strokeDasharray="3 3" />
+            </CardHeader>
+            <CardContent>
+              {dailyClicks && dailyClicks.length > 0 ? (
+                <div className="h-64 sm:h-80">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={dailyClicks} margin={{ top: 5, right: 10, left: 10, bottom: 5 }}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
                       <XAxis
                         dataKey="date"
-                        tickFormatter={(value) => new Date(value).toLocaleDateString()}
+                        tickFormatter={(value) => formatDate(value)}
+                        fontSize={12}
+                        tick={{ fill: '#666' }}
+                        axisLine={{ stroke: '#e0e0e0' }}
                       />
-                      <YAxis />
+                      <YAxis
+                        fontSize={12}
+                        tick={{ fill: '#666' }}
+                        axisLine={{ stroke: '#e0e0e0' }}
+                      />
                       <Tooltip
-                        labelFormatter={(value) => new Date(value).toLocaleDateString()}
+                        labelFormatter={(value) => formatDate(value)}
+                        contentStyle={{
+                          backgroundColor: 'white',
+                          border: '1px solid #e0e0e0',
+                          borderRadius: '8px',
+                          fontSize: '14px'
+                        }}
                       />
                       <Line
                         type="monotone"
                         dataKey="clicks"
-                        stroke="hsl(var(--primary))"
-                        strokeWidth={2}
-                        dot={{ fill: 'hsl(var(--primary))' }}
+                        stroke="#3b82f6"
+                        strokeWidth={3}
+                        dot={{ fill: '#3b82f6', strokeWidth: 0, r: 4 }}
+                        activeDot={{ r: 6, fill: '#1d4ed8' }}
                       />
                     </LineChart>
                   </ResponsiveContainer>
-                ) : (
-                  <div className="flex items-center justify-center h-[300px] text-muted-foreground">
-                    No click data available
+                </div>
+              ) : (
+                <div className="h-64 flex items-center justify-center text-gray-500">
+                  <div className="text-center">
+                    <Activity className="h-12 w-12 text-gray-300 mx-auto mb-3" />
+                    <p className="text-sm">No click data available yet</p>
                   </div>
-                )}
-              </CardContent>
-            </Card>
+                </div>
+              )}
+            </CardContent>
+          </Card>
 
-            {/* Top Referrers */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Top Referrers</CardTitle>
-                <CardDescription>
-                  Where your clicks are coming from
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                {referrers.length > 0 ? (
-                  <div className="space-y-4">
-                    {referrers.slice(0, 10).map((referrer, index) => (
-                      <div key={index} className="flex items-center justify-between">
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium truncate">
-                            {referrer.referer === 'Direct' 
-                              ? 'Direct Traffic' 
-                              : referrer.referer
-                            }
-                          </p>
-                        </div>
-                        <div className="text-sm font-medium">
-                          {formatNumber(referrer.count)} clicks
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="text-center py-8 text-muted-foreground">
-                    No referrer data available
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* URL Details */}
-          <Card className="mt-8">
+          {/* Top Referrers */}
+          <Card className="border-0 shadow-sm">
             <CardHeader>
-              <CardTitle>URL Details</CardTitle>
+              <CardTitle className="text-lg font-semibold">Top Traffic Sources</CardTitle>
+              <p className="text-sm text-gray-500">Where your clicks are coming from</p>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <h4 className="font-medium mb-2">Created</h4>
-                  <p className="text-muted-foreground">
-                    {formatDateTime(analytics.created_at)}
-                  </p>
+              {referrers && referrers.length > 0 ? (
+                <div className="space-y-3">
+                  {referrers.map((referrer: any, index: number) => (
+                    <div key={index} className="flex items-center justify-between p-3 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors">
+                      <div className="flex items-center gap-3 flex-1 min-w-0">
+                        <div className="flex items-center justify-center w-8 h-8 bg-white rounded-lg border">
+                          {referrer.referer === 'Direct' ? (
+                            <Globe className="h-4 w-4 text-gray-600" />
+                          ) : (
+                            <ExternalLink className="h-4 w-4 text-gray-600" />
+                          )}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-medium text-gray-900 truncate">
+                            {referrer.referer === 'Direct' ? 'Direct Traffic' : referrer.referer}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-semibold text-gray-900">{formatNumber(referrer.count)}</p>
+                        <p className="text-xs text-gray-500">clicks</p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-                
-                {analytics.last_clicked && (
-                  <div>
-                    <h4 className="font-medium mb-2">Last Clicked</h4>
-                    <p className="text-muted-foreground">
-                      {formatDateTime(analytics.last_clicked)}
-                    </p>
-                  </div>
-                )}
-                
-                {url.description && (
-                  <div className="md:col-span-2">
-                    <h4 className="font-medium mb-2">Description</h4>
-                    <p className="text-muted-foreground">{url.description}</p>
-                  </div>
-                )}
-              </div>
+              ) : (
+                <div className="text-center py-8 text-gray-500">
+                  <Users className="h-12 w-12 text-gray-300 mx-auto mb-3" />
+                  <p className="text-sm">No referrer data available</p>
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>
 
+        {/* Quick Actions - Mobile Optimized */}
+        <Card className="border-0 shadow-sm">
+          <CardContent className="p-4">
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Link className="w-full" href={`/dashboard/urls/${url.id}/share`} >
+               <Button variant="default">
+                <Share2 className="h-4 w-4 mr-2" />
+                Share Link
+               </Button>
+              </Link>
+              <Link className="w-full" href={`${url.short_url}`}>
+               <Button variant="outline">
+                  <Eye className="h-4 w-4 mr-2" />
+                  Preview
+               </Button>
+              </Link>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Footer Info */}
+        <Card className="border-0 shadow-sm bg-gradient-to-r from-blue-50 to-purple-50">
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between text-sm">
+              <div className="flex items-center gap-2 text-blue-600">
+                <Clock className="h-4 w-4" />
+                <span>Last clicked {formatDateTime(analytics.last_clicked)}</span>
+              </div>
+              <Badge variant="success">
+                Active
+              </Badge>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
   )
 }

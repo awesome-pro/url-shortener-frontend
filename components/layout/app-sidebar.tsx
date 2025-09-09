@@ -115,7 +115,7 @@ export function AppSidebar({ ...props }) {
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader className="border-b flex items-center justify-center">
         <Link href="/dashboard">
-          <Image src="/logo.png" alt="LinkShort" width={132} height={32} className="hidden md:block" />
+          <Image src="/logo.png" alt="LinkShort" width={132} height={32}/>
         </Link>
       </SidebarHeader>
 
@@ -146,16 +146,9 @@ export function AppSidebar({ ...props }) {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <SidebarMenuButton
-                  size="lg"
-                  className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-                >
-                  <Avatar className="h-8 w-8 rounded-lg">
+      <SidebarFooter className='border-t'>
+        <div className='flex items-center gap-2'>
+        <Avatar className="h-8 w-8 rounded-lg">
                     {/* <AvatarImage
                       src={user?.avatar}
                       alt={user?.username}
@@ -172,49 +165,10 @@ export function AppSidebar({ ...props }) {
                       <span className="truncate text-xs text-muted-foreground">
                         {user?.email || 'No email'}
                       </span>
-                      <Badge variant="secondary" className="text-xs">
-                        {user?.role || 'USER'}
-                      </Badge>
+                      
                     </div>
                   </div>
-                  <ChevronUp className="ml-auto size-4" />
-                </SidebarMenuButton>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
-                side="bottom"
-                align="end"
-                sideOffset={4}
-              >
-                <DropdownMenuItem asChild>
-                  <Link
-                    href="/dashboard/profile"
-                    className="flex items-center gap-2 cursor-pointer"
-                  >
-                    <User className="h-4 w-4" />
-                    <span>Profile</span>
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link
-                    href="/dashboard/settings"
-                    className="flex items-center gap-2 cursor-pointer"
-                  >
-                    <Settings className="h-4 w-4" />
-                    <span>Settings</span>
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={signOut}
-                  className="cursor-pointer text-destructive focus:text-destructive"
-                >
-                  <LogOut className="h-4 w-4" />
-                  <span>Sign Out</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </SidebarMenuItem>
-        </SidebarMenu>
+        </div>
       </SidebarFooter>
     </Sidebar>
   );
