@@ -1,0 +1,221 @@
+"use client";
+
+import React from 'react';
+import { usePathname } from 'next/navigation';
+import Link from 'next/link';
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarHeader,
+} from '@/components/ui/sidebar';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+import {
+  Home,
+  Settings,
+  User,
+  Users,
+  Shield,
+  BarChart3,
+  FileText,
+  Link as LinkIcon,
+  ChevronUp,
+  LogOut,
+} from 'lucide-react';
+import { useAuth } from '@/hooks/use-auth';
+import { UserRole } from '@/types';
+import Image from 'next/image';
+
+// Define navigation items based on user roles
+const getNavigationItems = (userRole: UserRole) => {
+  const baseItems = [
+    {
+      title: 'Dashboard',
+      url: '/dashboard',
+      icon: Home,
+      description: 'Overview and analytics',
+    },
+    {
+      title: 'URLs',
+      url: '/dashboard/urls',
+      icon: LinkIcon,
+      description: 'Manage your URLs',
+    },
+    {
+      title: 'Profile',
+      url: '/dashboard/profile',
+      icon: User,
+      description: 'Your account settings',
+    },
+  ];
+
+  const adminItems = [
+    {
+      title: 'Users',
+      url: '/dashboard/users',
+      icon: Users,
+      description: 'Manage users',
+    },
+    {
+      title: 'Analytics',
+      url: '/dashboard/analytics',
+      icon: BarChart3,
+      description: 'System analytics',
+    },
+    {
+      title: 'Reports',
+      url: '/dashboard/reports',
+      icon: FileText,
+      description: 'Generate reports',
+    },
+    {
+      title: 'Admin Settings',
+      url: '/dashboard/admin-settings',
+      icon: Shield,
+      description: 'System configuration',
+    },
+  ];
+
+  switch (userRole) {
+    case UserRole.ADMIN:
+      return [...baseItems, ...adminItems];
+    default:
+      return baseItems;
+  }
+};
+
+export function AppSidebar({ ...props }) {
+  const { user, signOut } = useAuth();
+  const pathname = usePathname();
+
+  const navigationItems = getNavigationItems(user?.role || UserRole.USER);
+
+  const getUserInitials = (username: string) => {
+    return username
+      .split(' ')
+      .map(name => name[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2);
+  };
+
+  return (
+    <Sidebar collapsible="icon" {...props}>
+      <SidebarHeader className="border-b flex items-center justify-center">
+        <Link href="/dashboard">
+          <Image src="/logo.png" alt="LinkShort" width={132} height={32} className="hidden md:block" />
+        </Link>
+      </SidebarHeader>
+
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {navigationItems.map((item) => {
+                const isActive = pathname === item.url;
+                
+                return (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={isActive}
+                      tooltip={item.description}
+                    >
+                      <Link href={item.url} className={`flex items-center gap-3 ${isActive ? 'text-primary bg-primary/20' : 'text-sidebar-foreground'}`}>
+                        <item.icon className="h-4 w-4" />
+                        <span>{item.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+
+      <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <SidebarMenuButton
+                  size="lg"
+                  className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+                >
+                  <Avatar className="h-8 w-8 rounded-lg">
+                    {/* <AvatarImage
+                      src={user?.avatar}
+                      alt={user?.username}
+                    /> */}
+                    <AvatarFallback className="rounded-lg">
+                      {user?.username ? getUserInitials(user.username) : 'U'}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="grid flex-1 text-left text-sm leading-tight">
+                    <span className="truncate font-semibold">
+                      {user?.username || 'User'}
+                    </span>
+                    <div className="flex items-center gap-1">
+                      <span className="truncate text-xs text-muted-foreground">
+                        {user?.email || 'No email'}
+                      </span>
+                      <Badge variant="secondary" className="text-xs">
+                        {user?.role || 'USER'}
+                      </Badge>
+                    </div>
+                  </div>
+                  <ChevronUp className="ml-auto size-4" />
+                </SidebarMenuButton>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
+                side="bottom"
+                align="end"
+                sideOffset={4}
+              >
+                <DropdownMenuItem asChild>
+                  <Link
+                    href="/dashboard/profile"
+                    className="flex items-center gap-2 cursor-pointer"
+                  >
+                    <User className="h-4 w-4" />
+                    <span>Profile</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link
+                    href="/dashboard/settings"
+                    className="flex items-center gap-2 cursor-pointer"
+                  >
+                    <Settings className="h-4 w-4" />
+                    <span>Settings</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={signOut}
+                  className="cursor-pointer text-destructive focus:text-destructive"
+                >
+                  <LogOut className="h-4 w-4" />
+                  <span>Sign Out</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
+    </Sidebar>
+  );
+}

@@ -3,8 +3,6 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
-import { AuthGuard } from '@/components/auth/auth-guard'
-import { MainLayout } from '@/components/layout/main-layout'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -35,7 +33,7 @@ import {toast }from 'sonner'
 
 export default function URLAnalyticsPage() {
   const params = useParams()
-  const urlId = parseInt(params.id as string)
+  const urlId = params.id as string
   
   const [url, setUrl] = useState<URL | null>(null)
   const [analytics, setAnalytics] = useState<URLAnalytics | null>(null)
@@ -103,8 +101,7 @@ export default function URLAnalyticsPage() {
 
   if (loading) {
     return (
-      <AuthGuard>
-        <MainLayout>
+
           <div className="container mx-auto px-4 py-8">
             <div className="mb-8">
               <Skeleton className="h-8 w-64 mb-2" />
@@ -122,15 +119,13 @@ export default function URLAnalyticsPage() {
               ))}
             </div>
           </div>
-        </MainLayout>
-      </AuthGuard>
+
     )
   }
 
   if (!url || !analytics) {
     return (
-      <AuthGuard>
-        <MainLayout>
+     
           <div className="container mx-auto px-4 py-8">
             <Card>
               <CardContent className="text-center py-12">
@@ -144,14 +139,12 @@ export default function URLAnalyticsPage() {
               </CardContent>
             </Card>
           </div>
-        </MainLayout>
-      </AuthGuard>
+       
     )
   }
 
   return (
-    <AuthGuard>
-      <MainLayout>
+
         <div className="container mx-auto px-4 py-8">
           {/* Header */}
           <div className="mb-8">
@@ -346,7 +339,6 @@ export default function URLAnalyticsPage() {
             </CardContent>
           </Card>
         </div>
-      </MainLayout>
-    </AuthGuard>
+
   )
 }

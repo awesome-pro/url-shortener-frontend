@@ -60,7 +60,7 @@ export default function DashboardPage() {
           </p>
         </div>
         <Button asChild>
-          <Link href="/urls/create">Create Short Link</Link>
+          <Link href="/dashboard/urls/create">Create Short Link</Link>
         </Button>
       </div>
 
@@ -147,7 +147,7 @@ export default function DashboardPage() {
                 Create your first short URL to see analytics here.
               </p>
               <Button className="mt-4" asChild>
-                <Link href="/urls/create">Create Short Link</Link>
+                <Link href="/dashboard/urls/create">Create Short Link</Link>
               </Button>
             </div>
           )}
@@ -165,10 +165,10 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent className="space-y-3">
             <Button asChild className="w-full justify-start">
-              <Link href="/urls/create">Create New Short Link</Link>
+              <Link href="/dashboard/urls/create">Create New Short Link</Link>
             </Button>
             <Button variant="outline" asChild className="w-full justify-start">
-              <Link href="/urls">Manage All URLs</Link>
+              <Link href="/dashboard/urls">Manage All URLs</Link>
             </Button>
           </CardContent>
         </Card>
@@ -182,10 +182,10 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent className="space-y-3">
             <Button variant="outline" asChild className="w-full justify-start">
-              <Link href="/urls">View Detailed Analytics</Link>
+              <Link href="/dashboard/urls">View Detailed Analytics</Link>
             </Button>
             <Button variant="outline" asChild className="w-full justify-start">
-              <Link href="/profile">Account Settings</Link>
+              <Link href="/dashboard/profile">Account Settings</Link>
             </Button>
           </CardContent>
         </Card>
