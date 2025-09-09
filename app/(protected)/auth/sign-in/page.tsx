@@ -121,7 +121,7 @@ export default function SignIn() {
         </Form>
         </CardContent>
         <CardFooter className="flex justify-center">
-          <p className='text-center text-sm text-muted-foreground'> Don't have an account? <Link href="/auth/sign-up" className="text-primary">Sign Up</Link></p>
+          <p className='text-center text-sm text-muted-foreground'> New to ShortUrl? <Link href="/auth/sign-up" className="text-primary">Sign Up</Link></p>
         </CardFooter>
   
         <Button variant='outline' size='lg' className=' w-[90%] mx-auto'>
