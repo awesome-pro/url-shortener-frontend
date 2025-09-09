@@ -1,73 +1,102 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
-import Cookies from 'js-cookie'
-import { toast } from 'sonner'
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 
-// API Configuration
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api'
+const baseURL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api` || 'http://localhost:8080/api'
 
-// Create axios instance
-const apiClient: AxiosInstance = axios.create({
-  baseURL: API_BASE_URL,
-  timeout: 10000,
+// Create axios instance with default config
+export const api = axios.create({
+  baseURL,
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
-  withCredentials: true,
-})
+  withCredentials: true, // Important for sending cookies
+});
 
-// Request interceptor to add auth token
-apiClient.interceptors.request.use(
-  (config) => {
-    const token = Cookies.get('access_token')
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`
+// Track if a token refresh is in progress
+let isRefreshing = false;
+// Store pending requests that should be retried after token refresh
+let failedQueue: Array<{
+  resolve: (value: unknown) => void;
+  reject: (reason?: any) => void;
+  config: AxiosRequestConfig;
+}> = [];
+
+// Process the queue of failed requests
+const processQueue = (error: AxiosError | null) => {
+  failedQueue.forEach(request => {
+    if (error) {
+      request.reject(error);
+    } else {
+      request.resolve(request.config);
     }
-    return config
-  },
-  (error) => {
-    return Promise.reject(error)
-  }
-)
+  });
+  
+  failedQueue = [];
+};
 
-// Response interceptor for error handling
-apiClient.interceptors.response.use(
-  (response: AxiosResponse) => {
-    return response
-  },
-  (error) => {
-    if (error.response?.status === 401) {
-      // Unauthorized - clear token and redirect to login
-      Cookies.remove('access_token')
-      if (typeof window !== 'undefined') {
-        window.location.href = '/auth/login'
+// Handle token refresh
+const refreshAuthToken = async () => {
+  try {
+    // Call the session refresh API endpoint
+    const response = await fetch('/api/auth/session', {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
       }
-    } else if (error.response?.status >= 500) {
-      toast.error('Server error. Please try again later.')
-    } else if (error.response?.data?.detail) {
-      toast.error(error.response.data.detail)
-    } else if (error.message) {
-      toast.error(error.message)
+    });
+    
+    if (!response.ok) {
+      throw new Error('Failed to refresh token');
     }
-    return Promise.reject(error)
+    
+    const data = await response.json();
+    return data.isSignedIn;
+  } catch (error) {
+    console.error('Error refreshing token:', error);
+    return false;
   }
-)
+};
 
-// Generic API methods
-export const api = {
-  get: <T>(url: string, config?: AxiosRequestConfig) => 
-    apiClient.get<T>(url, config),
-  
-  post: <T>(url: string, data?: any, config?: AxiosRequestConfig) => 
-    apiClient.post<T>(url, data, config),
-  
-  put: <T>(url: string, data?: any, config?: AxiosRequestConfig) => 
-    apiClient.put<T>(url, data, config),
-  
-  delete: <T>(url: string, config?: AxiosRequestConfig) => 
-    apiClient.delete<T>(url, config),
-  
-  patch: <T>(url: string, data?: any, config?: AxiosRequestConfig) => 
-    apiClient.patch<T>(url, data, config),
-}
+api.interceptors.response.use(
+  (response: AxiosResponse) => response,
+  async (error: AxiosError) => {
+    const originalRequest = error.config as AxiosRequestConfig & { _retry?: boolean };
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      if (isRefreshing) {
+        return new Promise((resolve, reject) => {
+          failedQueue.push({ resolve, reject, config: originalRequest });
+        })
+          .then(config => api(config as AxiosRequestConfig))
+          .catch(err => Promise.reject(err));
+      }
+      
+      originalRequest._retry = true;
+      isRefreshing = true;
+      
+      try {
+        const refreshed = await refreshAuthToken();
+        
+        if (refreshed) {
+          processQueue(null);
+          setTimeout(() => {
+            return Promise.resolve()
+          }, 1000);
+        } else {
+          processQueue(error);
+          window.location.href = '/auth/sign-in';
+          return Promise.reject(error);
+        }
+      } catch (refreshError) {
+        processQueue(error);
+        window.location.href = '/auth/sign-in';
+        return Promise.reject(refreshError);
+      } finally {
+        isRefreshing = false;
+      }
+    }
+    return Promise.reject(error.response?.data);
+  }
+);
 
-export default apiClient
+export default api;

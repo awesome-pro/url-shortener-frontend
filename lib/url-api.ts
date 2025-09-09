@@ -1,54 +1,55 @@
 import { api } from './api'
-import { URL, URLCreate, URLUpdate, URLListResponse, PaginationParams } from '@/types'
+import { URL, URLCreate, URLUpdate, URLListResponse} from '@/types'
+import { PaginateQuery } from './pagination'
 
 export const urlApi = {
   // Create new short URL
   create: async (urlData: URLCreate): Promise<URL> => {
-    const response = await api.post<URL>('/urls/', urlData)
+    const response = await api.post<URL>('/urls/', urlData) 
     return response.data
   },
 
   // Get user's URLs with pagination
-  getList: async (params: PaginationParams = {}): Promise<URLListResponse> => {
+  getList: async (params: PaginateQuery): Promise<URLListResponse> => {
     const queryParams = new URLSearchParams()
     if (params.page) queryParams.append('page', params.page.toString())
-    if (params.per_page) queryParams.append('per_page', params.per_page.toString())
+    if (params.limit) queryParams.append('limit', params.limit.toString())
     
     const response = await api.get<URLListResponse>(`/urls/?${queryParams.toString()}`)
     return response.data
   },
 
   // Get specific URL by ID
-  getById: async (id: number): Promise<URL> => {
+  getById: async (id: string): Promise<URL> => {
     const response = await api.get<URL>(`/urls/${id}`)
     return response.data
   },
 
   // Update URL
-  update: async (id: number, urlData: URLUpdate): Promise<URL> => {
+  update: async (id: string, urlData: URLUpdate): Promise<URL> => {
     const response = await api.put<URL>(`/urls/${id}`, urlData)
     return response.data
   },
 
   // Delete URL
-  delete: async (id: number): Promise<void> => {
+  delete: async (id: string): Promise<void> => {
     await api.delete(`/urls/${id}`)
   },
 
   // Get URL analytics
-  getAnalytics: async (id: number) => {
+  getAnalytics: async (id: string) => {
     const response = await api.get(`/urls/${id}/analytics`)
     return response.data
   },
 
   // Get daily analytics
-  getDailyAnalytics: async (id: number, days: number = 30) => {
+  getDailyAnalytics: async (id: string, days: number = 30) => {
     const response = await api.get(`/urls/${id}/analytics/daily?days=${days}`)
     return response.data
   },
 
   // Get referrer analytics
-  getReferrers: async (id: number, limit: number = 10) => {
+  getReferrers: async (id: string, limit: number = 10) => {
     const response = await api.get(`/urls/${id}/analytics/referrers?limit=${limit}`)
     return response.data
   },
