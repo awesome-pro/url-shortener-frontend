@@ -5,10 +5,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Link2, BarChart3, MousePointerClick, TrendingUp } from 'lucide-react'
-import { analyticsApi } from '@/lib/analytics-api'
-import { DashboardStats } from '@/types'
+import { analyticsApi } from '@/services/analytics.service'
 import { formatNumber } from '@/lib/utils'
 import Link from 'next/link'
+import { DashboardStats } from '@/types'
 
 export default function DashboardPage() {
   const [stats, setStats] = useState<DashboardStats | null>(null)

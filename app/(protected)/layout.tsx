@@ -1,5 +1,4 @@
-import { AuthGuard } from '@/components/auth/auth-guard'
-import { MainLayout } from '@/components/layout/main-layout'
+import { AuthProvider } from '@/hooks/use-auth'
 
 export default function ProtectedLayout({
   children,
@@ -7,10 +6,8 @@ export default function ProtectedLayout({
   children: React.ReactNode
 }) {
   return (
-    <AuthGuard>
-      <MainLayout>
-        {children}
-      </MainLayout>
-    </AuthGuard>
+   <AuthProvider>
+    {children}
+   </AuthProvider>
   )
 }

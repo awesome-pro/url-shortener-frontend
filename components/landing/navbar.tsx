@@ -2,17 +2,15 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { useAuth } from '@/hooks/use-auth'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
-import { Link2, Menu, X } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import Image from 'next/image'
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const { isAuthenticated } = useAuth()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -62,21 +60,13 @@ export function Navbar() {
           </nav>
 
           {/* Desktop CTA */}
-          <div className="hidden md:flex items-center space-x-4">
-            {isAuthenticated ? (
-              <Button asChild>
-                <Link href="/dashboard">Dashboard</Link>
-              </Button>
-            ) : (
-              <>
-                <Button variant="ghost" asChild>
-                  <Link href="/auth/login">Sign In</Link>
-                </Button>
-                <Button asChild>
-                  <Link href="/auth/register">Get Started</Link>
-                </Button>
-              </>
-            )}
+          <div className="hidden md:flex items-center space-x-4">            
+            <Button variant="ghost" asChild>
+              <Link href="/auth/sign-in">Sign In</Link>
+            </Button>
+            <Button asChild>
+              <Link href="/auth/sign-up">Get Started</Link>
+            </Button>
           </div>
 
           {/* Mobile Menu */}
@@ -109,20 +99,12 @@ export function Navbar() {
                 ))}
                 
                 <div className="pt-4 border-t space-y-3">
-                  {isAuthenticated ? (
-                    <Button asChild className="w-full">
-                      <Link href="/dashboard">Dashboard</Link>
-                    </Button>
-                  ) : (
-                    <>
-                      <Button variant="outline" asChild className="w-full">
-                        <Link href="/auth/login">Sign In</Link>
-                      </Button>
-                      <Button asChild className="w-full">
-                        <Link href="/auth/register">Get Started</Link>
-                      </Button>
-                    </>
-                  )}
+                  <Button variant="outline" asChild className="w-full">
+                    <Link href="/auth/sign-in">Sign In</Link>
+                  </Button>
+                  <Button asChild className="w-full">
+                    <Link href="/auth/sign-up">Get Started</Link>
+                  </Button>
                 </div>
               </nav>
             </SheetContent>

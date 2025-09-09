@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 import {
@@ -49,7 +49,7 @@ export default function URLsPage() {
   const fetchUrls = async (page: number = 1) => {
     try {
       setLoading(true)
-      const data = await urlApi.getList({ page, per_page: 10 })
+      const data = await urlApi.getList({ page, limit: 10 })
       setUrls(data)
     } catch (error) {
       console.error('Failed to fetch URLs:', error)
@@ -72,7 +72,7 @@ export default function URLsPage() {
     }
   }
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id: string) => {
     if (!confirm('Are you sure you want to delete this URL?')) {
       return
     }
@@ -86,7 +86,7 @@ export default function URLsPage() {
     }
   }
 
-  const filteredUrls = urls?.urls.filter(url =>
+  const filteredUrls = urls?.data.filter(url =>
     url.original_url.toLowerCase().includes(searchTerm.toLowerCase()) ||
     url.short_code.toLowerCase().includes(searchTerm.toLowerCase()) ||
     url.title?.toLowerCase().includes(searchTerm.toLowerCase())
@@ -241,7 +241,7 @@ export default function URLsPage() {
           </div>
 
           {/* Pagination */}
-          {urls && urls.pages > 1 && (
+          {urls && urls.pagination.total_pages > 1 && (
             <div className="flex justify-center">
               <Pagination>
                 <PaginationContent>
@@ -252,7 +252,7 @@ export default function URLsPage() {
                     />
                   </PaginationItem>
                   
-                  {[...Array(Math.min(5, urls.pages))].map((_, i) => {
+                  {[...Array(Math.min(5, urls.pagination.total_pages))].map((_, i) => {
                     const page = i + 1
                     return (
                       <PaginationItem key={page}>
@@ -267,7 +267,7 @@ export default function URLsPage() {
                     )
                   })}
                   
-                  {urls.pages > 5 && (
+                  {urls.pagination.total_pages > 5 && (
                     <PaginationItem>
                       <PaginationEllipsis />
                     </PaginationItem>
@@ -275,8 +275,8 @@ export default function URLsPage() {
                   
                   <PaginationItem>
                     <PaginationNext
-                      onClick={() => setCurrentPage(Math.min(urls.pages, currentPage + 1))}
-                      className={currentPage === urls.pages ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
+                      onClick={() => setCurrentPage(Math.min(urls.pagination.total_pages, currentPage + 1))}
+                      className={currentPage === urls.pagination.total_pages ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
                     />
                   </PaginationItem>
                 </PaginationContent>

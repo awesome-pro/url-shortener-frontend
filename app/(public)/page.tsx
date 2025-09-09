@@ -4,7 +4,6 @@ import { Navbar } from '@/components/landing/navbar'
 import { StatsSection } from '@/components/landing/stats-section'
 import { HowItWorksSection } from '@/components/landing/how-it-works-section'
 import { TestimonialsSection } from '@/components/landing/testimonials-section'
-import { PricingSection } from '@/components/landing/pricing-section'
 import { CTASection } from '@/components/landing/cta-section'
 import { Footer } from '@/components/landing/footer'
 
@@ -17,7 +16,6 @@ export default function LandingPage() {
         <FeaturesSection />
         <HowItWorksSection />
         <TestimonialsSection />
-        {/* <PricingSection /> */}
         <CTASection />
       <Footer />
     </div>

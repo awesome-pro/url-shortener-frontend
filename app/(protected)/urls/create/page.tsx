@@ -10,10 +10,13 @@ import { Textarea } from '@/components/ui/textarea'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Loader2, Link2, Copy, CheckCircle } from 'lucide-react'
-import { CreateURLFormData, URL } from '@/types'
+import { URLCreate, URL } from '@/types'
 import { urlApi } from '@/lib/url-api'
-import { validateUrl, copyToClipboard } from '@/lib/utils'
+import { validateUrl, copyToClipboard, formatDateTime } from '@/lib/utils'
 import { toast } from 'sonner'
+import { Calendar } from '@/components/ui/calendar'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import Image from 'next/image'
 
 export default function CreateURLPage() {
   const [error, setError] = useState('')
@@ -27,15 +30,15 @@ export default function CreateURLPage() {
     formState: { errors, isSubmitting },
     watch,
     reset,
-  } = useForm<CreateURLFormData>()
+    setValue,
+  } = useForm<URLCreate>()
 
   const originalUrl = watch('original_url')
 
-  const onSubmit = async (data: CreateURLFormData) => {
+  const onSubmit = async (data: URLCreate) => {
     try {
       setError('')
       
-      // Validate URL
       if (!validateUrl(data.original_url)) {
         setError('Please enter a valid URL')
         return
@@ -48,7 +51,7 @@ export default function CreateURLPage() {
         title: data.title || undefined,
         description: data.description || undefined,
         custom_code: data.custom_code || undefined,
-        expires_at: data.expires_at ? data.expires_at.toISOString() : undefined,
+        expires_at: data.expires_at ? data.expires_at : undefined,
       }
 
       const result = await urlApi.create(urlData)
@@ -158,22 +161,17 @@ export default function CreateURLPage() {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-2xl">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold">Create Short URL</h1>
-        <p className="text-muted-foreground">
-          Transform your long URL into a short, shareable link
-        </p>
-      </div>
+
+      <h1 className="text-2xl lg:text-3xl font-bold mb-4 text-center">
+        Shorten New URL
+      </h1>
 
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center">
-            <Link2 className="mr-2 h-5 w-5" />
-            URL Details
+          <CardTitle className="flex items-center justify-center">
+            <Image src="/logo.png" alt="LinkShort" width={132} height={32} className='mr-2' />
+            
           </CardTitle>
-          <CardDescription>
-            Enter the URL you want to shorten and customize your link
-          </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -262,11 +260,27 @@ export default function CreateURLPage() {
 
             <div className="space-y-2">
               <Label htmlFor="expires_at">Expiration Date (optional)</Label>
-              <Input
-                id="expires_at"
-                type="datetime-local"
-                {...register('expires_at')}
-              />
+              <Popover>
+                <PopoverTrigger asChild>  
+                  <Button
+                    id="expires_at"
+                    type="button"
+                    variant="outline"
+                    className="w-full"
+                  >
+                    {watch('expires_at') ? formatDateTime(watch('expires_at') as Date) : 'Select expiration date'}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    id="expires_at"
+                    mode="single"
+                    defaultMonth={watch('expires_at') as Date}
+                    selected={watch('expires_at') as Date}
+                    onSelect={(date) => setValue('expires_at', date as Date)}
+                  />
+                </PopoverContent>
+              </Popover>
               <p className="text-sm text-muted-foreground">
                 Set when this link should stop working
               </p>

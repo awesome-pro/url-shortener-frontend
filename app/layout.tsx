@@ -23,9 +23,7 @@ export default function RootLayout({
     <html lang="en" className="scroll-smooth">
       <body className={`${inter.variable} font-sans h-full antialiased`}>
         {children}
-        <Toaster
-          richColors
-        />
+        <Toaster richColors position="top-right" duration={2000}  swipeDirections={['top', 'right']}/>
       </body>
     </html>
   )

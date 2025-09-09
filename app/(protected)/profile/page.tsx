@@ -4,14 +4,13 @@ import { useAuth } from '@/hooks/use-auth'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
-import { User, Mail, Calendar, Shield } from 'lucide-react'
-import { formatDateTime } from '@/lib/utils'
+import { User, Mail, Calendar, Shield, Loader2 } from 'lucide-react'
 
 export default function ProfilePage() {
   const { user } = useAuth()
 
   if (!user) {
-    return null
+    return <div>User not found</div>
   }
 
   return (
@@ -76,7 +75,7 @@ export default function ProfilePage() {
                   </label>
                   <div className="flex items-center space-x-2 mt-1">
                     <Calendar className="h-4 w-4 text-muted-foreground" />
-                    <p>{formatDateTime(user.created_at)}</p>
+                    {/* <p>{formatDateTime(user.created_at)}</p> */}
                   </div>
                 </div>
               </div>
