@@ -294,7 +294,7 @@ export default function CreateURLPage() {
               {isSubmitting ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Creating...
+                  Shortening your URL...
                 </>
               ) : (
                 'Create Short URL'

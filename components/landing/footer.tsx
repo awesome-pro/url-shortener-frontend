@@ -143,7 +143,7 @@ export function Footer() {
             © 2025 ShortUrl. All rights reserved.
           </div>
           <div className="flex items-center space-x-6">
-            <span>Made with ❤️ for professionals</span>
+            <span>Made with ❤️ by <Link href="https://abhinandan.pro" target="_blank" className="text-primary">Abhinandan</Link></span>
             <div className="flex items-center space-x-1">
               <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
               <span>All systems operational</span>

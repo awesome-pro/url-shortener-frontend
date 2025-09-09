@@ -12,7 +12,8 @@ import {
   Shield, 
   BarChart3,
   Play,
-  CheckCircle
+  CheckCircle,
+  PhoneCall
 } from 'lucide-react'
 import { validateUrl } from '@/lib/utils'
 
@@ -35,7 +36,7 @@ export function HeroSection() {
           </h1>
 
           {/* Subheading */}
-          <p className="text-md md:text-lg text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-md md:text-lg text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed px-4">
             Create short, memorable links with advanced analytics. 
             Perfect for marketing campaigns, social media, and professional use.
           </p>
@@ -60,22 +61,24 @@ export function HeroSection() {
           </div>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col md:flex-row gap-4 justify-center mb-12 w-full">
-            <Button asChild className="h-12 w-full md:w-60">
+          <div className="flex flex-col md:flex-row gap-4 justify-center mb-12 w-full px-5">
+            <Button asChild className="h-12 w-full md:w-60 rounded-full">
               <Link href="/auth/sign-up">
-                Get Started Free
+                Get Started
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Link>
             </Button>
-            <Button variant="outline" className="h-12 w-full md:w-60">
-              <Play className="w-5 h-5 mr-2" />
-              Watch Demo
+            <Button variant="outline" asChild className="h-12 w-full md:w-60 rounded-full">
+              <Link href="https://cal.com/awesome_v0/30min" target='_blank' className='flex items-center justify-center'>
+                <PhoneCall className="w-5 h-5 mr-2" />
+                Contact The Founder
+              </Link>
             </Button>
           </div>
 
           {/* Trust Indicators */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-3xl mx-auto">
-            <div className="flex items-center justify-center space-x-3">
+            <div className="flex items-center justify-center space-x-10 md:space-x-3">
               <div className="flex items-center justify-center w-12 h-12 rounded-full bg-primary/10">
                 <Zap className="w-6 h-6 text-primary" />
               </div>
@@ -85,7 +88,7 @@ export function HeroSection() {
               </div>
             </div>
             
-            <div className="flex items-center justify-center space-x-3">
+            <div className="flex items-center justify-center space-x-10 md:space-x-3">
               <div className="flex items-center justify-center w-12 h-12 rounded-full bg-primary/10">
                 <Shield className="w-6 h-6 text-primary" />
               </div>
@@ -95,7 +98,7 @@ export function HeroSection() {
               </div>
             </div>
             
-            <div className="flex items-center justify-center space-x-3">
+            <div className="flex items-center justify-center space-x-10 md:space-x-3">
               <div className="flex items-center justify-center w-12 h-12 rounded-full bg-primary/10">
                 <BarChart3 className="w-6 h-6 text-primary" />
               </div>

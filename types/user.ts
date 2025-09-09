@@ -18,6 +18,9 @@ export interface User {
     username: string;
     role: UserRole;
     status: UserStatus;
+    google_id?: string;
+    avatar_url?: string;
+    is_oauth_user: boolean;
 }
 
 export interface UserResponse extends User {
@@ -42,4 +45,17 @@ export interface RegisterInput {
     email: string;
     username: string;
     password: string;
+}
+
+export interface GoogleOAuthRequest {
+    id_token: string;
+}
+
+export interface GoogleOAuthCallback {
+    code: string;
+    state?: string;
+}
+
+export interface GoogleOAuthURL {
+    auth_url: string;
 }

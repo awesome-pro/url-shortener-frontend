@@ -16,24 +16,7 @@ export function TestimonialsSection() {
       rating: 5,
       stats: '2.5M clicks tracked'
     },
-    {
-      name: 'Marcus Rodriguez',
-      role: 'Social Media Manager',
-      company: 'Creative Agency',
-      avatar: 'https://media.istockphoto.com/id/1171169127/photo/headshot-of-cheerful-handsome-man-with-trendy-haircut-and-eyeglasses-isolated-on-gray.jpg',
-      content: 'The custom branding features are amazing. Our clients love seeing their branded short links, and the click-through rates have improved significantly.',
-      rating: 5,
-      stats: '500+ campaigns managed'
-    },
-    {
-      name: 'Emily Watson',
-      role: 'Content Creator',
-      company: 'Independent',
-      avatar: 'https://media.istockphoto.com/id/1300972574/photo/millennial-male-team-leader-organize-virtual-workshop-with-employees-online.jpg',
-      content: 'As a content creator, I need reliable link tracking. LinkShort provides exactly what I need with a beautiful, easy-to-use interface.',
-      rating: 5,
-      stats: '1.2M followers reached'
-    },
+    
     {
       name: 'David Park',
       role: 'E-commerce Manager',
@@ -68,28 +51,28 @@ export function TestimonialsSection() {
   }
 
   return (
-    <section id="testimonials" className="py-24 bg-background">
+    <section id="testimonials" className="py-24 bg-white">
       <div className="container mx-auto px-4">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <Badge variant="secondary" className="mb-4">
+          <Badge  className="mb-4 px-3 text-white ">
             Testimonials
           </Badge>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
-            Loved by thousands of
-            <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent block">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 text-black">
+            Loved by thousands of <br />
+            <span className="text-primary">
               professionals worldwide
             </span>
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-xl text-black max-w-3xl mx-auto">
             See what our customers have to say about their experience with LinkShort.
           </p>
         </div>
 
         {/* Testimonials Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-5">
           {testimonials.map((testimonial, index) => (
-            <Card key={index} className="group hover:shadow-xl transition-all duration-300 border-0 bg-background/80 backdrop-blur-sm relative overflow-hidden">
+            <Card key={index} className="group hover:shadow-xl transition-all duration-300 border-0 bg-slate-300 backdrop-blur-sm relative overflow-hidden">
               {/* Quote Icon */}
               <div className="absolute top-4 right-4 opacity-10 group-hover:opacity-20 transition-opacity">
                 <Quote className="w-8 h-8" />
@@ -137,15 +120,15 @@ export function TestimonialsSection() {
 
         {/* Trust Indicators */}
         <div className="mt-16 text-center">
-          <div className="inline-flex items-center space-x-2 text-muted-foreground mb-8">
-            <div className="w-12 h-px bg-border" />
+          <div className="inline-flex items-center space-x-2 text-slate-300 mb-8">
+            <div className="w-12 h-px bg-slate-300" />
             <span>Trusted by leading companies</span>
-            <div className="w-12 h-px bg-border" />
+            <div className="w-12 h-px bg-slate-300" />
           </div>
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center opacity-60">
             {['TechFlow', 'Creative Agency', 'ShopSmart', 'Growth Labs'].map((company, index) => (
-              <div key={index} className="text-2xl font-bold text-muted-foreground hover:text-primary transition-colors font-italic">
+              <div key={index} className="text-2xl font-bold text-white transition-colors font-italic">
                 {company}
               </div>
             ))}
@@ -154,10 +137,10 @@ export function TestimonialsSection() {
 
         {/* Bottom CTA */}
         <div className="text-center mt-16">
-          <p className="text-muted-foreground mb-6">
+          <p className="text-slate-200 mb-6">
             Join thousands of satisfied customers
           </p>
-          <Button asChild className='w-60'>
+          <Button variant="outline" asChild className='w-60 rounded-full'>
             <Link href="/auth/register">
               Start Your Success Story
             </Link>

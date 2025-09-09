@@ -32,11 +32,9 @@ export function CTASection() {
   ]
 
   return (
-    <section className="relative py-32 overflow-hidden">
+    <section className="relative py-32 overflow-hidden bg-primary">
       {/* Sophisticated Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-background via-muted/20 to-background">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/[0.03] via-transparent to-primary/[0.03]" />
-      </div>
+     
       
       {/* Subtle Geometric Pattern */}
       <div className="absolute inset-0 opacity-30">
@@ -58,14 +56,14 @@ export function CTASection() {
               <span className="text-sm font-medium text-muted-foreground">Rated 4.9/5 by 10,000+ users</span>
             </div>
             
-            <h2 className="text-4xl lg:text-5xl font-bold mb-6 leading-tight">
-              Transform your workflow with
-              <span className="bg-gradient-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent block mt-2">
+            <h2 className="text-4xl lg:text-5xl font-bold mb-6 leading-tight text-slate-300">
+              Transform your workflow with <br />
+              <span className="text-white">
                 professional link management
               </span>
             </h2>
             
-            <p className="text-xl text-muted-foreground mb-10 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl text-slate-300 mb-10 max-w-3xl mx-auto leading-relaxed">
               Join industry leaders who rely on our platform for mission-critical URL operations. 
               Experience enterprise-grade performance with startup agility.
             </p>
@@ -104,14 +102,14 @@ export function CTASection() {
           {/* Premium CTA Buttons */}
           <div className="text-center mb-16">
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-            <Button asChild className='w-60 h-12'>
+            <Button variant="outline"  asChild className='w-full md:w-60 h-12 rounded-full'>
                 <Link href="/auth/register">
                   Start Free Trial
                   <ArrowRight className="w-4 h-4 " />
                 </Link>
               </Button>
 
-              <Button variant="outline" className='w-60 h-12 flex'>
+              <Button asChild className='w-full md:w-60 h-12 flex rounded-full text-white hover:bg-white hover:text-primary'>
                 <Link href="https://cal.com/awesome_v0/30min" target='_blank' className='flex items-center justify-center'>
                   <PhoneCall className="w-4 h-4 mr-2" />
                   Talk to us
@@ -120,7 +118,7 @@ export function CTASection() {
               </Button>
             </div>
             
-            <div className="mt-6 flex items-center justify-center gap-8 text-sm text-muted-foreground">
+            <div className="mt-6 flex  items-center justify-center gap-8 text-xs text-muted-foreground">
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-primary" />
                 14-day free trial
@@ -129,10 +127,7 @@ export function CTASection() {
                 <CheckCircle2 className="w-4 h-4 text-primary" />
                 No credit card required
               </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-primary" />
-                Cancel anytime
-              </div>
+              
             </div>
           </div>
 
@@ -201,7 +196,7 @@ export function CTASection() {
 
           {/* Final Assurance */}
           <div className="text-center mt-12">
-            <p className="text-muted-foreground">
+            <p className="text-slate-300">
               <span className="font-medium">30-day money-back guarantee</span> • Trusted by Fortune 500 companies • GDPR compliant
             </p>
           </div>

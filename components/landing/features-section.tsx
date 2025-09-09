@@ -67,18 +67,6 @@ export function FeaturesSection() {
         'Dynamic content delivery'
       ]
     },
-    // {
-    //   icon: Users,
-    //   title: 'Team Collaboration',
-    //   description: 'Seamless workflows with role-based access and team management',
-    //   badge: 'Teams',
-    //   stats: 'Unlimited seats',
-    //   highlights: [
-    //     'Role-based permissions',
-    //     'Shared workspaces',
-    //     'Activity monitoring'
-    //   ]
-    // },
     {
       icon: Globe,
       title: 'Custom Branding Hub',
@@ -94,23 +82,21 @@ export function FeaturesSection() {
   ]
 
   return (
-    <section id="features" className="py-24 bg-background">
+    <section id="features" className="py-24 bg-primary/90">
       <div className="container mx-auto px-4">
         {/* Section Header */}
         <div className="text-center mb-20">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border/50 bg-muted/30 mb-6">
-            <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-            <span className="text-sm font-medium text-muted-foreground">Platform Features</span>
-          </div>
-          
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 max-w-4xl mx-auto leading-tight">
-            Enterprise-grade tools for
-            <span className="bg-gradient-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent block mt-2">
+          <Badge variant="outline" className="mb-4 px-3 text-white ">
+            Platform Features
+          </Badge>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 max-w-4xl mx-auto leading-tight text-slate-300">
+            Enterprise-grade tools for <br />
+            <span className="text-white">
               modern link management
             </span>
           </h2>
           
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+          <p className="text-lg text-slate-300 max-w-2xl mx-auto leading-relaxed">
             Built for teams that demand performance, security, and insights. 
             Everything you need to scale your link operations professionally.
           </p>
@@ -210,7 +196,7 @@ export function FeaturesSection() {
 
         {/* Enhanced Bottom CTA */}
         <div className="relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 rounded-2xl blur-3xl" />
+          <div className="absolute inset-0 bg-slate-500 rounded-2xl blur-3xl" />
           <div className="relative bg-background/80 backdrop-blur-sm border border-border/50 rounded-2xl p-8 text-center">
             <h3 className="text-2xl font-bold mb-3">Ready to transform your workflow?</h3>
             <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
@@ -219,14 +205,14 @@ export function FeaturesSection() {
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               
-              <Button asChild className='w-60 h-12'>
+              <Button asChild className='w-full md:w-60 h-12 rounded-full'>
                 <Link href="/auth/register">
                   Start Free Trial
                   <ArrowRight className="w-4 h-4 " />
                 </Link>
               </Button>
 
-              <Button variant="outline" className='w-60 h-12 flex'>
+              <Button variant="outline" className='w-full md:w-60 h-12 flex rounded-full'>
                 <Link href="https://cal.com/awesome_v0/30min" target='_blank' className='flex items-center justify-center'>
                   <PhoneCall className="w-4 h-4 mr-2" />
                   Talk to us
