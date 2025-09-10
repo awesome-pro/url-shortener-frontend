@@ -5,7 +5,7 @@ import { PaginateQuery } from './pagination'
 export const urlApi = {
   // Create new short URL
   create: async (urlData: URLCreate): Promise<URL> => {
-    const response = await api.post<URL>('/urls/', urlData) 
+    const response = await api.post<URL>('/urls', urlData) 
     return response.data
   },
 
@@ -15,7 +15,7 @@ export const urlApi = {
     if (params.page) queryParams.append('page', params.page.toString())
     if (params.limit) queryParams.append('limit', params.limit.toString())
     
-    const response = await api.get<URLListResponse>(`/urls/?${queryParams.toString()}`)
+    const response = await api.get<URLListResponse>(`/urls?${queryParams.toString()}`)
     return response.data
   },
 

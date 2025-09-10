@@ -103,13 +103,13 @@ export function CTASection() {
           <div className="text-center mb-16">
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
             <Button variant="outline"  asChild className='w-full md:w-60 h-12 rounded-full'>
-                <Link href="/auth/register">
+                <Link href="/auth/sign-up">
                   Start Free Trial
                   <ArrowRight className="w-4 h-4 " />
                 </Link>
               </Button>
 
-              <Button asChild className='w-full md:w-60 h-12 flex rounded-full text-white hover:bg-white hover:text-primary'>
+              <Button asChild className='w-full md:w-60 h-12 flex rounded-full text-white hover:bg-white/90 hover:text-black  border-2 border-white'>
                 <Link href="https://cal.com/awesome_v0/30min" target='_blank' className='flex items-center justify-center'>
                   <PhoneCall className="w-4 h-4 mr-2" />
                   Talk to us

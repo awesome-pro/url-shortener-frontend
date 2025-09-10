@@ -1,33 +1,19 @@
 'use client'
 
-import { useState } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Badge } from '@/components/ui/badge'
 import { 
   ArrowRight, 
-  Link2, 
   Zap, 
   Shield, 
   BarChart3,
-  Play,
-  CheckCircle,
   PhoneCall
 } from 'lucide-react'
-import { validateUrl } from '@/lib/utils'
 
 export function HeroSection() {
-  const [demoUrl, setDemoUrl] = useState('')
-  const [isValidUrl, setIsValidUrl] = useState(false)
-
-  const handleUrlChange = (value: string) => {
-    setDemoUrl(value)
-    setIsValidUrl(validateUrl(value))
-  }
-
+ 
   return (
-    <section className="relative min-h-screen flex flex-col items-center text-center justify-center">
+    <section className="relative min-h-screen flex flex-col items-center text-center justify-center pt-32 lg:mt-0">
 
           {/* Main Heading */}
           <h1 className="text-4xl lg:text-6xl font-bold tracking-tight mb-6">
@@ -41,25 +27,7 @@ export function HeroSection() {
             Perfect for marketing campaigns, social media, and professional use.
           </p>
 
-          {/* Demo URL Input */}
-          <div className="max-w-2xl mx-auto mb-8">
-            <div className="flex flex-col md:flex-row gap-4 p-2 bg-background/50 backdrop-blur-sm border rounded-2xl shadow-lg">
-              
-            </div>
-            {demoUrl && (
-              <p className="text-sm text-muted-foreground mt-2 text-left">
-                {isValidUrl ? (
-                  <span className="text-green-600 flex items-center">
-                    <CheckCircle className="w-4 h-4 mr-1" />
-                    Valid URL - Ready to shorten
-                  </span>
-                ) : (
-                  <span className="text-destructive">Please enter a valid URL</span>
-                )}
-              </p>
-            )}
-          </div>
-
+      
           {/* CTA Buttons */}
           <div className="flex flex-col md:flex-row gap-4 justify-center mb-12 w-full px-5">
             <Button asChild className="h-12 w-full md:w-60 rounded-full">

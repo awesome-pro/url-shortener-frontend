@@ -127,7 +127,7 @@ export function Navbar() {
               {isMobileMenuOpen && (
                 <div 
                   className={cn(
-                    "absolute right-0 top-12 w-96 bg-slate-200 rounded-2xl shadow-2xl border  overflow-hidden z-50",
+                    "absolute right-0 top-12 w-80 bg-slate-200 rounded-2xl shadow-2xl border overflow-hidden z-50",
                     "transform transition-all duration-200 origin-top-right",
                     isClosing 
                       ? "opacity-0 scale-95 translate-y-1" 

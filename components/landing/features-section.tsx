@@ -206,7 +206,7 @@ export function FeaturesSection() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               
               <Button asChild className='w-full md:w-60 h-12 rounded-full'>
-                <Link href="/auth/register">
+                <Link href="/auth/sign-up">
                   Start Free Trial
                   <ArrowRight className="w-4 h-4 " />
                 </Link>

@@ -58,9 +58,9 @@ export default function CreateURLPage() {
       setCreatedUrl(result)
       toast.success('Short URL created successfully!')
     } catch (err: any) {
-      const errorMessage = err.response?.data?.detail || 'Failed to create short URL'
-      setError(errorMessage)
-      toast.error(errorMessage)
+     
+      setError(err)
+      toast.error(err) 
     }
   }
 
@@ -147,7 +147,7 @@ export default function CreateURLPage() {
                 Create Another
               </Button>
               <Button
-                onClick={() => router.push('/urls')}
+                onClick={() => router.push('/dashboard/urls')}
                 className="flex-1"
               >
                 View All URLs

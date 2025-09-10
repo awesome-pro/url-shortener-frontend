@@ -7,7 +7,7 @@ export function middleware(request: NextRequest) {
 
   // Define protected routes
   const protectedRoutes = ['/dashboard', '/urls', '/profile']
-  const authRoutes = ['/auth/login', '/auth/register']
+  const authRoutes = ['/auth/sign-in', '/auth/sign-up']
 
   // Check if the current path is protected
   const isProtectedRoute = protectedRoutes.some(route => 
@@ -21,7 +21,7 @@ export function middleware(request: NextRequest) {
 
   // If accessing protected route without token, redirect to login
   if (isProtectedRoute && !token) {
-    const loginUrl = new URL('/auth/login', request.url)
+    const loginUrl = new URL('/auth/sign-in', request.url)
     loginUrl.searchParams.set('redirect', pathname)
     return NextResponse.redirect(loginUrl)
   }

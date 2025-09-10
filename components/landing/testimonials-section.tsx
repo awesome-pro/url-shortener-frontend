@@ -51,20 +51,20 @@ export function TestimonialsSection() {
   }
 
   return (
-    <section id="testimonials" className="py-24 bg-white">
+    <section id="testimonials" className="py-24 bg-gradient-to-br from-slate-50 to-purple-50/30">
       <div className="container mx-auto px-4">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <Badge  className="mb-4 px-3 text-white ">
+          <Badge className="mb-4 px-4 py-2 bg-primary hover:bg-primary/90 text-white border-0 font-medium">
             Testimonials
           </Badge>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 text-black">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 text-gray-900">
             Loved by thousands of <br />
             <span className="text-primary">
               professionals worldwide
             </span>
           </h2>
-          <p className="text-xl text-black max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
             See what our customers have to say about their experience with LinkShort.
           </p>
         </div>
@@ -72,44 +72,47 @@ export function TestimonialsSection() {
         {/* Testimonials Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-5">
           {testimonials.map((testimonial, index) => (
-            <Card key={index} className="group hover:shadow-xl transition-all duration-300 border-0 bg-slate-300 backdrop-blur-sm relative overflow-hidden">
+            <Card key={index} className="group hover:shadow-2xl hover:shadow-purple-100/50 transition-all duration-300 border border-gray-200 bg-white backdrop-blur-sm relative overflow-hidden hover:-translate-y-2">
+              {/* Subtle gradient overlay */}
+              <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-purple-50/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              
               {/* Quote Icon */}
-              <div className="absolute top-4 right-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                <Quote className="w-8 h-8" />
+              <div className="absolute top-6 right-6 opacity-10 group-hover:opacity-20 transition-opacity">
+                <Quote className="w-8 h-8 text-primary" />
               </div>
               
-              <CardContent className="p-6">
+              <CardContent className="p-8 relative z-10">
                 {/* Rating */}
-                <div className="flex items-center space-x-1 mb-4">
+                <div className="flex items-center space-x-1 mb-6">
                   {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                    <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
                   ))}
                 </div>
 
                 {/* Content */}
-                <blockquote className="text-muted-foreground mb-6 leading-relaxed">
+                <blockquote className="text-gray-700 mb-8 leading-relaxed text-lg font-medium">
                   &ldquo;{testimonial.content}&rdquo;
                 </blockquote>
 
                 {/* Author */}
-                <div className="flex items-center space-x-3 mb-4">
-                  <Avatar className="w-10 h-10">
+                <div className="flex items-center space-x-4 mb-6">
+                  <Avatar className="w-12 h-12 ring-2 ring-primary">
                     <AvatarImage src={testimonial.avatar} alt={testimonial.name} />
-                    <AvatarFallback className="bg-primary/10 text-primary font-semibold">
+                    <AvatarFallback className="bg-primary text-primary-foreground font-semibold text-lg">
                       {getInitials(testimonial.name)}
                     </AvatarFallback>
                   </Avatar>
                   <div>
-                    <div className="font-semibold">{testimonial.name}</div>
-                    <div className="text-sm text-muted-foreground">
-                      {testimonial.role} at {testimonial.company}
+                    <div className="font-bold text-gray-900 text-lg">{testimonial.name}</div>
+                    <div className="text-gray-600 font-medium">
+                      {testimonial.role} at <span className="text-primary">{testimonial.company}</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Stats */}
-                <div className="pt-4 border-t border-border">
-                  <div className="text-sm font-medium text-primary">
+                <div className="pt-6 border-t border-gray-200">
+                  <div className="text-sm font-bold text-primary bg-primary/10 px-3 py-2 rounded-full inline-block">
                     {testimonial.stats}
                   </div>
                 </div>
@@ -118,30 +121,14 @@ export function TestimonialsSection() {
           ))}
         </div>
 
-        {/* Trust Indicators */}
-        <div className="mt-16 text-center">
-          <div className="inline-flex items-center space-x-2 text-slate-300 mb-8">
-            <div className="w-12 h-px bg-slate-300" />
-            <span>Trusted by leading companies</span>
-            <div className="w-12 h-px bg-slate-300" />
-          </div>
-          
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center opacity-60">
-            {['TechFlow', 'Creative Agency', 'ShopSmart', 'Growth Labs'].map((company, index) => (
-              <div key={index} className="text-2xl font-bold text-white transition-colors font-italic">
-                {company}
-              </div>
-            ))}
-          </div>
-        </div>
-
+       
         {/* Bottom CTA */}
-        <div className="text-center mt-16">
-          <p className="text-slate-200 mb-6">
+        <div className="text-center mt-20">
+          <p className="text-gray-700 mb-8 text-lg font-medium">
             Join thousands of satisfied customers
           </p>
-          <Button variant="outline" asChild className='w-60 rounded-full'>
-            <Link href="/auth/register">
+          <Button asChild className='w-60 h-12 rounded-full'>
+            <Link href="/auth/sign-up">
               Start Your Success Story
             </Link>
           </Button>
