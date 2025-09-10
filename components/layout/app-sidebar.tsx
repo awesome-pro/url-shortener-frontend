@@ -15,24 +15,13 @@ import {
   SidebarHeader,
 } from '@/components/ui/sidebar';
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
-import {
   Home,
-  Settings,
   User,
   Users,
   Shield,
   BarChart3,
   FileText,
   Link as LinkIcon,
-  ChevronUp,
-  LogOut,
 } from 'lucide-react';
 import { useAuth } from '@/hooks/use-auth';
 import { UserRole } from '@/types';

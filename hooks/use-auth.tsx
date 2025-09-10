@@ -201,7 +201,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       await authApi.signOut();
       dispatch({ type: "SIGN_OUT" });
-      router.push("/auth/sign-in");
+      toast.success("Signed out successfully!")
+      window.location.href = "/auth/sign-in";
     } catch (error: any) {
       toast.error("Failed to sign out. Please try again.");
       dispatch({ type: "SET_ERROR", payload: "Failed to sign out" });
