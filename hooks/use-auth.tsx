@@ -84,13 +84,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const forceSignOut = useCallback(async (showToast = true) => {
     try {
-      await authApi.signOut();
       await fetch("/api/auth/session", {
         method: "DELETE",
         credentials: "include",
       });
     } catch (error) {
-      console.log("Failed to clear server session:", error);
+      console.warn("Failed to clear server session:", error);
     }
 
     dispatch({ type: "RESET_TO_UNAUTHENTICATED" });
@@ -239,17 +238,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     dispatch({ type: "SET_LOADING", payload: true });
     try {
       await authApi.signOut();
-
-      await fetch("/api/auth/session", {
-        method: "DELETE",
-        credentials: "include",
-      });
-
       dispatch({ type: "SIGN_OUT" });
       router.push("/auth/sign-in");
     } catch (error: any) {
       console.error("Sign out error:", error);
-      // Even if API sign out fails, clear local state and redirect
       dispatch({ type: "SIGN_OUT" });
       router.push("/auth/sign-in");
       toast.error("Signed out (with some issues). Please sign in again.");
