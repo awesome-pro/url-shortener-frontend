@@ -1,4 +1,14 @@
 # URL Shortener Frontend
+## [🔗 ShortUrl - Live Demo](https://shortenurl.abhinandan.pro)
+## [🔗 Backend Swagger UI Docs](https://shorturl.abhinandan.pro/docs)
+## [🔗 Backend App](https://shorturl.abhinandan.pro/health)
+<img width="320" height="180" alt="Screenshot 2025-09-11 at 8 04 51 AM" src="https://github.com/user-attachments/assets/f8515f0e-52bc-4e61-a776-bb7e165479b7" />
+<img width="320" height="180" alt="Screenshot 2025-09-11 at 8 05 04 AM" src="https://github.com/user-attachments/assets/2504f0d2-1889-436a-9ad5-60bdbd39dfe7" />
+<img width="320" height="180" alt="Screenshot 2025-09-11 at 8 05 22 AM" src="https://github.com/user-attachments/assets/91051f69-0339-4ccb-93bf-a301f2428a7d" />
+<img width="320" height="180" alt="Screenshot 2025-09-11 at 8 05 58 AM" src="https://github.com/user-attachments/assets/1effcf7d-e041-4b34-be4e-37206f27180a" />
+<img width="320" height="180" alt="Screenshot 2025-09-11 at 8 06 25 AM" src="https://github.com/user-attachments/assets/e0867153-ebad-42af-a2a5-938c5227b52d" />
+<img width="320" height="180" alt="Screenshot 2025-09-11 at 8 06 04 AM" src="https://github.com/user-attachments/assets/72a2a7df-2797-443f-99f4-512ea7d21558" />
+
 
 A modern, responsive frontend for the URL shortener application built with Next.js 15, React 19, TypeScript, Tailwind CSS 4, and shadcn/ui.
 
