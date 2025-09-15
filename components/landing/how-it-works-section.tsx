@@ -181,7 +181,7 @@ export function HowItWorksSection() {
           
           <span className="text-black mb-6">Ready to get started?</span>
           <Button asChild className='w-60 rounded-full'> 
-            <Link href="/auth/sign-up">
+            <Link href="/auth/sign-in">
               Create Your First Link
               
               <ArrowRight className="w-5 h-5 ml-2 inline" />

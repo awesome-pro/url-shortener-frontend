@@ -31,7 +31,7 @@ export function HeroSection() {
           {/* CTA Buttons */}
           <div className="flex flex-col md:flex-row gap-4 justify-center mb-12 w-full px-5">
             <Button asChild className="h-12 w-full md:w-60 rounded-full">
-              <Link href="/auth/sign-up">
+              <Link href="/auth/sign-in">
                 Get Started
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Link>

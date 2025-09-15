@@ -7,7 +7,7 @@ export function middleware(request: NextRequest) {
 
   // Define protected routes
   const protectedRoutes = ['/dashboard', '/urls', '/profile']
-  const authRoutes = ['/auth/sign-in', '/auth/sign-up']
+  const authRoutes = ['/auth/sign-in']
 
   // Check if the current path is protected
   const isProtectedRoute = protectedRoutes.some(route => 

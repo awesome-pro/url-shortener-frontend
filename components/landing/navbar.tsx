@@ -91,11 +91,8 @@ export function Navbar() {
 
             {/* Desktop CTA */}
             <div className="hidden lg:flex items-center space-x-3">            
-              <Button variant="ghost" asChild className="text-sm rounded-full hover:bg-white">
-                <Link href="/auth/sign-in">Sign In</Link>
-              </Button>
               <Button asChild className="text-sm px-6 rounded-full">
-                <Link href="/auth/sign-up">Get Started</Link>
+                <Link href="/auth/sign-in">Get Started</Link>
               </Button>
             </div>
 
@@ -166,14 +163,6 @@ export function Navbar() {
                       className="w-full h-10  border-gray-200 hover:border-gray-300 font-medium rounded-full"
                     >
                       <Link href="/auth/sign-in" onClick={closeMobileMenu}>
-                        Sign In
-                      </Link>
-                    </Button>
-                    <Button 
-                      asChild 
-                      className="rounded-full w-full h-10"
-                    >
-                      <Link href="/auth/sign-up" onClick={closeMobileMenu}>
                         Get Started
                       </Link>
                     </Button>

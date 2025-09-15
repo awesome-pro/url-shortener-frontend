@@ -128,7 +128,7 @@ export function TestimonialsSection() {
             Join thousands of satisfied customers
           </p>
           <Button asChild className='w-60 h-12 rounded-full'>
-            <Link href="/auth/sign-up">
+            <Link href="/auth/sign-in">
               Start Your Success Story
             </Link>
           </Button>

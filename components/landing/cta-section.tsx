@@ -103,7 +103,7 @@ export function CTASection() {
           <div className="text-center mb-16">
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
             <Button variant="outline"  asChild className='w-full md:w-60 h-12 rounded-full'>
-                <Link href="/auth/sign-up">
+                <Link href="/auth/sign-in">
                   Start Free Trial
                   <ArrowRight className="w-4 h-4 " />
                 </Link>

@@ -70,75 +70,9 @@ export default function SignIn() {
           </Link>
       </div>
         <Card className="shadow-2xl rounded-2xl border-0 w-[90%] md:w-[500px] mx-auto px-4 py-8">
-        <CardContent className="pt-4 ">
-         
-          <div className='flex flex-col items-center justify-center'>
+         <div className='flex flex-col items-center justify-center'>
             <Image src="/logo.png" alt="LinkShort" width={132} height={32} className='mx-auto mb-4' /> 
           </div>
-
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-
-           <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input placeholder="john.doe@example.com" className='w-full' {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password*</FormLabel>
-                  <FormControl>
-                    <div className="flex items-center gap-2">
-                      <Input placeholder="********" className='w-full' type={showPassword ? 'text' : 'password'} {...field} />
-                      <Button variant="ghost" type='button' size="icon" onClick={() => setShowPassword(!showPassword)}>
-                        {showPassword ? <Eye /> : <EyeOff />}
-                      </Button>
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-
-
-            <div className="flex flex-col md:flex-row justify-end gap-2 pt-2">
-              <Button 
-                className='w-full border-primary'
-                type="submit" 
-                variant={'outline'}
-                disabled={isLoading}
-              >
-                    {isLoading ? 'Please wait...' : 'Sign In'}
-                </Button>
-            </div>
-          </form>
-        </Form>
-        </CardContent>
-        <CardFooter className="flex justify-center">
-          <p className='text-center text-sm text-muted-foreground'> New to ShortUrl? <Link href="/auth/sign-up" className="text-primary">Sign Up</Link></p>
-        </CardFooter>
-        <div className="relative ">
-              <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t" />
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-background px-2 text-muted-foreground">OR</span>
-              </div>
-            </div>
         <GoogleOAuthButton 
               mode="signin" 
               disabled={isLoading || isSubmitting}
@@ -151,7 +85,6 @@ export default function SignIn() {
                 setIsSubmitting(false)
               }}
             />
-           
         </Card>
   </section>
   );
